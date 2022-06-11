@@ -73,7 +73,7 @@ class MainView: UIView {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+           // mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 50),
             mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15)

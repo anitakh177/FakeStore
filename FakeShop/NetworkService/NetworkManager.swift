@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Network {
     var productResults = [Product]()
@@ -13,7 +14,7 @@ class Network {
     
     let url = URL(string: "https://fakestoreapi.com/products")
 
-    func loadProducts() {
+    func loadProducts(completionHandler: @escaping ([Product]) -> Void) {
         URLSession.shared.dataTask(with: url!) { data, response, error in
         if let error = error {
             print(error)
@@ -21,9 +22,11 @@ class Network {
         }
         guard let data = data else { return }
         do {
-       let products = try JSONDecoder().decode([Product].self, from: data)
-            self.productResults = self.parse(data: data)
-            print(products)
+            var products = try JSONDecoder().decode([Product].self, from: data)
+            products = self.parse(data: data)
+            completionHandler(products)
+            //print(products)
+           
         } catch {
             print(error)
         }
@@ -40,6 +43,27 @@ class Network {
             print("JSON Error: \(error)")
             return []
         }
+    }
+}
+
+extension UIImageView {
+    func loadImage(url: URL) -> URLSessionDownloadTask {
+        
+        let session = URLSession.shared
+        let downloadTask = session.downloadTask(with: url) {
+            [weak self] url, _, error in
+            if error == nil, let url = url,
+               let data = try? Data(contentsOf: url),
+               let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    if let weakSelf = self {
+                        weakSelf.image = image
+                    }
+                }
+            }
+        }
+        downloadTask.resume()
+        return downloadTask
     }
 }
 
