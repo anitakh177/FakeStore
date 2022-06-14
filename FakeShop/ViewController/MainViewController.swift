@@ -10,27 +10,54 @@ import UIKit
 class MainViewController: UIViewController {
   
    private var mainView = MainView()
-    private var mainStackView = UIStackView()
-   
-   // private var collectionView = MainViewCollection()
-    
-  //  private var collectionView2: UICollectionView?
-   var network = Network()
+   private var mainStackView = UIStackView()
+ 
+var networkManager = NetworkManager()
+    var productResults = [Product]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
       setupMainStackView()
+        setupCollectionView()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+       
+        networkManager.loadProducts()
+        networkManager.delegate = self
+        collectionView.reloadData()
        
         
-      //  setupCollectionView()
-    
-        network.loadProducts { [weak self] product in
-            print("printing in viewDidLoad \(product.first)")
+    }
+ /*
+    func loadProductData() {
+        
+        network.getProducts { (result) in
+        
+            switch result {
+                
+            case .success(let listOf):
+            
+        
+            case .failure(let error):
+                self.showAlertWith(title: "Could Not Connect!", message: "Please check your internet connetcion \n or try again later")
+                print("Error processing JSON data: \(error)")
+            }
         }
+        
+    } */
+    // MARK: - Alert message
     
+    func showAlertWith(title: String, message: String, style: UIAlertController.Style = .alert) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: style)
+        let action = UIAlertAction(title: "OK", style: .default) { (action) in
+            self.dismiss(animated: true, completion: nil)
         }
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     // MARK: - Layout
     private func setupProfileHeaderView() {
@@ -39,7 +66,7 @@ class MainViewController: UIViewController {
       mainView.heightAnchor.constraint(equalToConstant: 180).isActive = true
        
     }
-    private func setupCollectionView() {
+ /*   private func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.heightAnchor.constraint(equalToConstant: 300).isActive = true
@@ -52,7 +79,7 @@ class MainViewController: UIViewController {
         ])
        */
     }
-    
+    */
     private func setupMainStackView() {
       mainStackView.axis = .vertical
         mainStackView.distribution = .fillProportionally
@@ -70,7 +97,7 @@ class MainViewController: UIViewController {
         mainStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
         mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
         mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        mainStackView.topAnchor.constraint(equalTo: view.topAnchor),
+        mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
         //4
         //mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -600)
       ])
@@ -82,10 +109,11 @@ class MainViewController: UIViewController {
     }
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 10
+        flowLayout.minimumLineSpacing = 15
         flowLayout.scrollDirection = .horizontal
     //  flowLayout.sectionInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
-        flowLayout.itemSize = CGSize(width: 30, height: 30)
+        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.itemSize = CGSize(width: 150, height: 220)
         return flowLayout
     }()
     
@@ -122,9 +150,9 @@ class MainViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     } 
-/*
+*/
      func setupCollectionView() {
-        addSubview(collectionView)
+         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .blue
         NSLayoutConstraint.activate([
@@ -132,12 +160,12 @@ class MainViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
         
         ])
     }
-    */
-  */
+    
+  
 }
 
 
@@ -145,16 +173,31 @@ class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return productResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainViewCollectionViewCell.identifier, for: indexPath)
-       // cell.contentView.backgroundColor = UIColor.red
-        return cell
+      
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainViewCollectionViewCell.identifier, for: indexPath) as! MainViewCollectionViewCell
+        let listOfProduct = productResults[indexPath.row]
+        cell.configure(for: listOfProduct)
+            return cell
+       
     }
 }
 // MARK: - Delegate
 extension MainViewController: UICollectionViewDelegate {
+    
+}
+
+extension MainViewController: NetworkManagerDelegate {
+    func didSendProductData(_ productService: NetworkManager, with product: [Product]) {
+        self.productResults.append(contentsOf: product)
+        
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            print(self.productResults.count)
+        }
+    }
     
 }

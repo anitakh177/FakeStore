@@ -16,8 +16,7 @@ class MainCollectionView {
     private lazy var flowlayout: UICollectionViewFlowLayout = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
-    layout.minimumLineSpacing = 1
-    layout.minimumInteritemSpacing = 1
+    
     layout.itemSize = CGSize(width: (view.frame.size.width/3)-4, height: (view.frame.size.width/3)-4)
     }()
     

@@ -8,14 +8,21 @@
 import Foundation
 import UIKit
 
-class Network {
-    var productResults = [Product]()
-    
-    
-    let url = URL(string: "https://fakestoreapi.com/products")
+protocol NetworkManagerDelegate {
+    func didSendProductData (_ productService: NetworkManager, with product: [Product])
+}
 
-    func loadProducts(completionHandler: @escaping ([Product]) -> Void) {
-        URLSession.shared.dataTask(with: url!) { data, response, error in
+class NetworkManager {
+ 
+    
+    private let url = URL(string: "https://fakestoreapi.com/products")
+    
+    private var dataTask: URLSessionDataTask?
+    
+     var delegate: NetworkManagerDelegate?
+    
+    func loadProducts() {
+        URLSession.shared.dataTask(with: url!) {  data, response, error in
         if let error = error {
             print(error)
             return
@@ -24,8 +31,10 @@ class Network {
         do {
             var products = try JSONDecoder().decode([Product].self, from: data)
             products = self.parse(data: data)
-            completionHandler(products)
-            //print(products)
+            print(products)
+            DispatchQueue.main.async {
+                self.delegate?.didSendProductData(self, with: products)
+            }
            
         } catch {
             print(error)
@@ -45,7 +54,6 @@ class Network {
         }
     }
 }
-
 extension UIImageView {
     func loadImage(url: URL) -> URLSessionDownloadTask {
         
