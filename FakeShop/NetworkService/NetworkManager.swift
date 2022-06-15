@@ -15,14 +15,39 @@ protocol NetworkManagerDelegate {
 class NetworkManager {
  
     
-    private let url = URL(string: "https://fakestoreapi.com/products")
-    
+  
     private var dataTask: URLSessionDataTask?
+    var delegate: NetworkManagerDelegate?
     
-     var delegate: NetworkManagerDelegate?
+   enum Category: Int {
+         case all = 0
+         case menSClothing = 1
+         case womenSClothing = 2
+         case electronics = 3
+         case jewelery = 4
+        
+        var type: String {
+            switch self {
+            case .all: return ""
+            case .menSClothing: return "category/men's%20clothing"
+            case .womenSClothing: return "category/women's%20clothing"
+            case .electronics: return "category/electronics"
+            case .jewelery: return "category/jewelery"
+            }
+        }
+    }
+    private func fakeStoreURL(category: Category) -> URL {
+        let kind = category.type
+        let url = URL(string: "https://fakestoreapi.com/products/" + "\(kind)")
+        return url!
+    }
+   
     
-    func loadProducts() {
-        URLSession.shared.dataTask(with: url!) {  data, response, error in
+    func loadProducts(category: Category) {
+        
+        let url = fakeStoreURL(category: category)
+        
+        URLSession.shared.dataTask(with: url) {  data, response, error in
         if let error = error {
             print(error)
             return
@@ -43,7 +68,7 @@ class NetworkManager {
    
     }
     
-    func parse(data: Data) -> [Product] {
+  private func parse(data: Data) -> [Product] {
         do {
             let decoder = JSONDecoder()
             let result = try decoder.decode([Product].self, from: data)

@@ -12,7 +12,7 @@ class MainViewController: UIViewController {
    private var mainView = MainView()
    private var mainStackView = UIStackView()
  
-var networkManager = NetworkManager()
+    var networkManager = NetworkManager()
     var productResults = [Product]()
     
     override func viewDidLoad() {
@@ -25,29 +25,42 @@ var networkManager = NetworkManager()
         collectionView.dataSource = self
         
        
-        networkManager.loadProducts()
+        networkManager.loadProducts(category: .all)
         networkManager.delegate = self
         collectionView.reloadData()
+        
        
         
     }
- /*
-    func loadProductData() {
-        
-        network.getProducts { (result) in
-        
-            switch result {
-                
-            case .success(let listOf):
+    
+    func performSearch() {
+        if let category = NetworkManager.Category(rawValue: segmentedControl.selectedSegmentIndex) {
+            networkManager.loadProducts(category: category)
+            collectionView.reloadData()
             
-        
-            case .failure(let error):
-                self.showAlertWith(title: "Could Not Connect!", message: "Please check your internet connetcion \n or try again later")
-                print("Error processing JSON data: \(error)")
-            }
         }
+    }
+    
+   
+    lazy var segmentedControl: UISegmentedControl = {
+        var control = UISegmentedControl(items: ["All", "Clothing", "Jewelery", "Electronics"])
+        control.selectedSegmentTintColor = .black
+        control.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        control.tintColor = .white
+        control.addTarget(self, action: #selector(segmentChanged(_ :)), for: .valueChanged)
+        return control
+    }()
+    
+    @objc func segmentChanged(_ sender: UISegmentedControl) {
+        performSearch()
+    }
+    
+    func setupSegmantedControll() {
+        mainStackView.addArrangedSubview(segmentedControl)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
-    } */
+    }
+ 
     // MARK: - Alert message
     
     func showAlertWith(title: String, message: String, style: UIAlertController.Style = .alert) {
@@ -63,23 +76,10 @@ var networkManager = NetworkManager()
     private func setupProfileHeaderView() {
       mainStackView.addArrangedSubview(mainView)
       mainView.translatesAutoresizingMaskIntoConstraints = false
-      mainView.heightAnchor.constraint(equalToConstant: 180).isActive = true
+      mainView.heightAnchor.constraint(equalToConstant: 140).isActive = true
        
     }
- /*   private func setupCollectionView() {
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        collectionView.backgroundColor = .blue
-        
-       /* NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200)
-        ])
-       */
-    }
-    */
+    
     private func setupMainStackView() {
       mainStackView.axis = .vertical
         mainStackView.distribution = .fillProportionally
@@ -103,7 +103,7 @@ var networkManager = NetworkManager()
       ])
       
       setupProfileHeaderView()
-      
+     setupSegmantedControll()
        
 
     }
@@ -113,7 +113,7 @@ var networkManager = NetworkManager()
         flowLayout.scrollDirection = .horizontal
     //  flowLayout.sectionInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
         flowLayout.minimumInteritemSpacing = 0.0
-        flowLayout.itemSize = CGSize(width: 150, height: 220)
+        flowLayout.itemSize = CGSize(width: 150, height: 260)
         return flowLayout
     }()
     
@@ -124,33 +124,12 @@ var networkManager = NetworkManager()
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: MainViewCollectionViewCell.identifier)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
-        collectionView.backgroundColor = .red
+       // collectionView.backgroundColor = .red
         
         return collectionView
     }()
     
-    // MARK: - Layout
-   /*
-   override func layoutSubviews() {
-        super.layoutSubviews()
-        let height = collectionView.frame.height - verticalInset * 2
-        let width = height
-        let itemSize = CGSize(width: width, height: height)
-        flowLayout.itemSize = itemSize
-    }
 
-*/
-    
-/*    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupCollectionView()
-       
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    } 
-*/
      func setupCollectionView() {
          view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,15 +138,19 @@ var networkManager = NetworkManager()
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 400),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
         
         ])
     }
     
-  
 }
 
+// MARK: - Search category
+
+extension MainViewController {
+    
+}
 
 // MARK: - Data Source
 extension MainViewController: UICollectionViewDataSource {
@@ -201,3 +184,5 @@ extension MainViewController: NetworkManagerDelegate {
     }
     
 }
+
+

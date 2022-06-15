@@ -30,9 +30,9 @@
             filePath = "FakeShop/NetworkService/NetworkManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "loadProducts()"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "loadProducts(category:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -15,22 +15,24 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     private let myImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .yellow
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
-     let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Title"
-        label.backgroundColor = .green
         label.clipsToBounds = true
         label.textAlignment = .center
+        label.font = UIFont(name: "Thonburi-Light", size: 13)
+        label.numberOfLines = 0
+        label.sizeToFit()
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "Price"
-        label.backgroundColor = .green
         label.clipsToBounds = true
         label.textAlignment = .center
         return label
@@ -38,7 +40,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .red
+        contentView.backgroundColor = .white
         contentView.addSubview(myImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
@@ -51,18 +53,14 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-      /*  myLabel.frame = CGRect(x: 5, y: contentView.frame.size.height-50, width: contentView.frame.size.width-10, height: 50 )
-        myImageView.frame = CGRect(x: 5, y: 0, width: contentView.frame.size.width-10, height: contentView.frame.size.height-50)
-        
-    */
-        titleLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-55, width: 110, height: 20)
-        priceLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-30, width: 110, height: 20)
+        titleLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-100, width: 110, height: 70)
+        priceLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-20, width: 110, height: 15)
         myImageView.frame = CGRect(x: 20, y: 15, width: 110, height: 140)
     }
     
     public func configure(for result: Product) {
         titleLabel.text = result.title
-        priceLabel.text = String(format: "%d", result.price)
+        priceLabel.text = ("\(String(format: "%.2f", result.price)) $")
         
         myImageView.image = UIImage(systemName: "square")
         if let imageURL = URL(string: result.image) {

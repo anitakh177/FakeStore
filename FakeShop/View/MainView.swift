@@ -8,18 +8,20 @@
 import UIKit
 
 class MainView: UIView {
+    
+
     let nameText = "Hi, Anita!"
     
     // MARK: - Properties
     
-    lazy var greetingLabel: UILabel = {
+    private lazy var greetingLabel: UILabel = {
         let label = UILabel()
         label.text = nameText
         label.font = UIFont(name: "TamilSangamMN-Bold", size: 22)
         return label
     }()
     
-    lazy var textLabel: UILabel = {
+   private lazy var textLabel: UILabel = {
         let label = UILabel()
         label.text = "New collection from Versace"
         label.font = UIFont(name: "TamilSangamMN-Bold", size: 20)
@@ -27,21 +29,14 @@ class MainView: UIView {
         return label
     }()
     
-    lazy var imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "versche")
         imageView.sizeToFit()
         return imageView
     }()
     
-    lazy var firstLineSegmentedControll: UISegmentedControl = {
-        var control = UISegmentedControl(items: ["All", "Clothing", "Jewelery", "Electronics"])
-        control.selectedSegmentTintColor = .black
-        control.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-        control.tintColor = .white
-        
-        return control
-    }()
+   
     
     private lazy var labelsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [greetingLabel, textLabel])
@@ -51,7 +46,7 @@ class MainView: UIView {
     }()
     
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [labelsStackView,  firstLineSegmentedControll])
+        let stackView = UIStackView(arrangedSubviews: [labelsStackView])
         stackView.axis = .vertical
         stackView.spacing = 10
         return stackView
@@ -81,3 +76,5 @@ class MainView: UIView {
         ])
     }
 }
+
+
