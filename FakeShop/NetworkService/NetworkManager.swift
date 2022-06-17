@@ -23,8 +23,8 @@ class NetworkManager {
          case all = 0
          case menSClothing = 1
          case womenSClothing = 2
-         case electronics = 3
-         case jewelery = 4
+         case electronics = 4
+         case jewelery = 3
         
         var type: String {
             switch self {

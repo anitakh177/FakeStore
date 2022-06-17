@@ -14,7 +14,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     
     private let myImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .yellow
+        //imageView.backgroundColor = .gray
         imageView.contentMode = .scaleToFill
         return imageView
     }()
@@ -26,7 +26,8 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.font = UIFont(name: "Thonburi-Light", size: 13)
         label.numberOfLines = 0
-        label.sizeToFit()
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         return label
     }()
     
@@ -63,22 +64,22 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         priceLabel.text = ("\(String(format: "%.2f", result.price)) $")
         
         myImageView.image = UIImage(systemName: "square")
+        myImageView.tintColor = .gray
         if let imageURL = URL(string: result.image) {
             downloadTask = myImageView.loadImage(url: imageURL)
         }
     }
     
     // for diferent text in label
-/*
-    public func configure(label: String) {
-        myLabel.text = label
-    }
+
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        myLabel.text = nil
+        titleLabel.text = nil
+        priceLabel.text = nil
+        myImageView.image = nil
     }
- */
+ 
 
 }
 

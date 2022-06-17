@@ -15,24 +15,30 @@ class MainView: UIView {
     // MARK: - Properties
     
     private lazy var greetingLabel: UILabel = {
-        let label = UILabel()
+        let label = PaddingLabel()
         label.text = nameText
+        label.paddingTop = 5
         label.font = UIFont(name: "TamilSangamMN-Bold", size: 22)
         return label
     }()
     
    private lazy var textLabel: UILabel = {
-        let label = UILabel()
+        let label = PaddingLabel()
         label.text = "New collection from Versace"
         label.font = UIFont(name: "TamilSangamMN-Bold", size: 20)
         label.textColor = .systemGray
+        label.paddingTop = 9
+        label.paddingBottom = 7
         return label
     }()
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
+        
         imageView.image = UIImage(named: "versche")
-        imageView.sizeToFit()
+        imageView.contentMode = .scaleToFill
+        imageView.clipsToBounds = true
+    
         return imageView
     }()
     
@@ -41,14 +47,16 @@ class MainView: UIView {
     private lazy var labelsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [greetingLabel, textLabel])
         stackView.axis = .vertical
-        stackView.spacing = 5
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 8
         return stackView
     }()
     
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [labelsStackView])
+        let stackView = UIStackView(arrangedSubviews: [labelsStackView, imageView])
+        stackView.distribution = .fillProportionally
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 5
         return stackView
     }()
     
@@ -70,8 +78,9 @@ class MainView: UIView {
         NSLayoutConstraint.activate([
            // mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
-            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 50),
-            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15)
+            mainStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3)
         
         ])
     }
