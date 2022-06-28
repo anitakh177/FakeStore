@@ -24,7 +24,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         label.text = "Title"
         label.clipsToBounds = true
         label.textAlignment = .center
-        label.font = UIFont(name: "Thonburi-Light", size: 13)
+        label.font = UIFont(name: "GeezaPro", size: 15)
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
@@ -34,6 +34,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "Price"
+        label.font = UIFont(name: "GeezaPro-Bold", size: 16)
         label.clipsToBounds = true
         label.textAlignment = .center
         return label
@@ -55,7 +56,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         titleLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-100, width: 110, height: 70)
-        priceLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-20, width: 110, height: 15)
+        priceLabel.frame = CGRect(x: 20, y: contentView.frame.size.height-20, width: 110, height: 17)
         myImageView.frame = CGRect(x: 20, y: 15, width: 110, height: 140)
     }
     

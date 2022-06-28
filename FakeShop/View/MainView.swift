@@ -24,7 +24,7 @@ class MainView: UIView {
     
    private lazy var textLabel: UILabel = {
         let label = PaddingLabel()
-        label.text = "New collection from Versace"
+        label.text = "Check our new collection"
         label.font = UIFont(name: "TamilSangamMN-Bold", size: 20)
         label.textColor = .systemGray
         label.paddingTop = 9

@@ -9,39 +9,183 @@ import UIKit
 
 class DetailProductView: UIView {
     
+    var downloadTask: URLSessionDownloadTask?
+    
+    
     private lazy var productImage: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: CGRect(x: 100, y: 100, width: 30, height: 30))
         imageView.image = UIImage()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFit
+        //imageView.backgroundColor = .blue
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.heightAnchor.constraint(equalToConstant: 270).isActive = true
+        //view.addSubview(imageView)
         return imageView
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.clipsToBounds = true
+        label.text = "Pajamas"
         label.textAlignment = .left
-        label.font = UIFont(name: "Thonburi-Bold", size: 17)
+        label.font = UIFont(name: "TamilSangamMN-Bold", size: 21)
         label.numberOfLines = 0
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.5
-        
+        label.lineBreakMode = .byWordWrapping
+        label.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    // MARK: - Initializers
+    
+    private lazy var priceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0.0$"
+        label.textAlignment = .right
+        label.font = UIFont(name: "Thonburi-Bold", size: 22)
+        //label.setContentCompressionResistancePriority(UILayoutPriority.required, for: .horizontal)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var imageStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [productImage])
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    
+    private lazy var titleAndPriceStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [ priceLabel])
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        //stack.alignment = .center
+        return stack
+    }()
+    
+    private lazy var categoryLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Category"
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        label.textAlignment = .left
+        return label
+    }()
+    private lazy var categoryNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Category"
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private lazy var categoryStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [categoryLabel, categoryNameLabel])
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        return stack
+    }()
+  
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Description"
+        label.numberOfLines = 0
+        return label
+    }()
+    private lazy var ratingLabel: UILabel = {
+        let label = UILabel()
+        label.text = "5.0"
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private lazy var rateCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private lazy var ratingTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Rating"
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private lazy var ratingStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [ratingTitleLabel, ratingLabel])
+        stack.distribution = .fill
+        stack.axis = .horizontal
+        return stack
+    }()
+    private lazy var rateStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [ratingStackView, rateCountLabel])
+        stack.distribution = .fill
+        stack.axis = .vertical
+        return stack
+    }()
+    
+    private let buyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Buy now", for: .normal)
+        return button
+    }()
+    private let cartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "cart"), for: .normal)
+        return button
+    }()
+   
+    private lazy var buttonStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [buyButton, cartButton])
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    
+    private lazy var mainStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [imageStackView, titleLabel, categoryStackView, descriptionLabel, rateStackView, priceLabel, buttonStack])
+        stack.axis = .vertical
+       // stack.distribution = .fillProportionally
+       // stack.alignment = .fill
+        //stack.backgroundColor = .red
+        stack.spacing = 20
+        return stack
+    }()
+    
+    // MARK: - Initilization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupStackView()
         
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Layouts
-    
-    func setupDetails() {
+  public func setupStackView() {
         
+        addSubview(mainStackView)
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
         
+       NSLayoutConstraint.activate([
+            mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            mainStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
+           ])
+            
+            }
+  
+    public func configure(for result: Product) {
+        titleLabel.text = result.title
+        priceLabel.text = ("\(String(format: "%.2f", result.price)) $")
+        descriptionLabel.text = result.description
+        categoryNameLabel.text = "\(result.category!.rawValue)"
+        ratingLabel.text = ("\(String(format: "%.1f", result.rating!.rate)) out of 5")
+        rateCountLabel.text = ("\(String(format: "%d", result.rating!.count)) people rated")
+        if let imagURL = URL(string: result.image) {
+            downloadTask = productImage.loadImage(url: imagURL)
     }
-    
+ }
 }

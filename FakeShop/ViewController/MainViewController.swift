@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    
     // MARK: Propeties
     private var mainView = MainView()
     private var mainStackView = UIStackView()
@@ -32,7 +33,7 @@ class MainViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: MainViewCollectionViewCell.identifier)
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceHorizontal = true
+        //collectionView.alwaysBounceVertical = true
        // collectionView.backgroundColor = .red
         
         return collectionView
@@ -53,7 +54,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Fake Store"
-       // performSearch()
+        performSearch()
         setupScrollView()
         setupMainStackView()
         setupCollectionView()
@@ -73,27 +74,28 @@ class MainViewController: UIViewController {
     func performSearch() {
         if let category = NetworkManager.Category(rawValue: segmentedControl.selectedSegmentIndex) {
             networkManager.loadProducts(category: category)
-            collectionView.reloadData()
-            collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+            //collectionView.reloadData()
+            //collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
         }
-       collectionView.reloadData()
-        collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+       //collectionView.reloadData()
+        //collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
     }
     @objc func segmentChanged(_ sender: UISegmentedControl) {
         performSearch()
-        //collectionView.reloadData()
+        collectionView.reloadData()
        // collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
 
     }
     // MARK: - Navigation
     
-    func navigateToDeatilVC() {
+    func navigateToDeatilVC(with indexPath: IndexPath) {
         let detailVC = DetailProductViewController()
         let navVC = UINavigationController(rootViewController: detailVC)
         navVC.modalPresentationStyle = .fullScreen
+        let results = productResults[indexPath.row]
+        detailVC.productResult = results
         
-        let indexPath = IndexPath.self
-        let productResult =  productResults
+        
         present(navVC, animated: true)
     }
     
@@ -154,7 +156,7 @@ class MainViewController: UIViewController {
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
-       // scrollView.backgroundColor = .green
+        //scrollView.backgroundColor = .green
         let frameLayoutGuide = scrollView.frameLayoutGuide
         
         NSLayoutConstraint.activate([
@@ -179,7 +181,7 @@ class MainViewController: UIViewController {
     }
     
     private func showButton() {
-        //let button = UIButton(frame: CGRect(x: 100, y: 600, width: 200, height: 50))
+        
         let button = UIButton()
         button.setTitle("Show all products", for: .normal)
         button.backgroundColor = .black
@@ -194,6 +196,18 @@ class MainViewController: UIViewController {
             button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
         
         ])
+        
+        button.addTarget(self, action: #selector(showAll), for: .touchUpInside)
+         
+    }
+    @objc func showAll() {
+        let allProductsVC = AllProductsViewController()
+        let navVC = UINavigationController(rootViewController: allProductsVC)
+        navVC.modalPresentationStyle = .fullScreen
+        let results = productResults
+        allProductsVC.productResults = results
+        
+        present(navVC, animated: true)
     }
     
 }
@@ -216,7 +230,8 @@ extension MainViewController: UICollectionViewDataSource {
 extension MainViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigateToDeatilVC()
+        navigateToDeatilVC(with: indexPath)
+        let listOfProduct = productResults[indexPath.row]
     }
 }
 
