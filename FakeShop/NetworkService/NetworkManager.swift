@@ -8,16 +8,9 @@
 import Foundation
 import UIKit
 
-protocol NetworkManagerDelegate {
-    func didSendProductData (_ productService: NetworkManager, with product: [Product])
-}
-
 class NetworkManager {
  
-    
-  
     private var dataTask: URLSessionDataTask?
-    var delegate: NetworkManagerDelegate?
     
    enum Category: Int {
          case all = 0
@@ -43,13 +36,14 @@ class NetworkManager {
     }
    
     
-    func loadProducts(category: Category) {
+    func loadProducts(category: Category, completion: @escaping(([Product]?) -> ())) {
         
         let url = fakeStoreURL(category: category)
         
         URLSession.shared.dataTask(with: url) {  data, response, error in
         if let error = error {
             print(error)
+            completion(nil)
             return
         }
         guard let data = data else { return }
@@ -58,11 +52,12 @@ class NetworkManager {
             products = self.parse(data: data)
             print(products)
             DispatchQueue.main.async {
-                self.delegate?.didSendProductData(self, with: products)
+                completion(products)
             }
            
         } catch {
             print(error)
+            completion(nil)
         }
     }.resume()
    

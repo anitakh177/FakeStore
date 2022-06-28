@@ -44,7 +44,7 @@ class MainViewController: UIViewController {
         control.selectedSegmentTintColor = .black
         control.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         control.tintColor = .white
-       control.selectedSegmentIndex = 0
+        control.selectedSegmentIndex = 0
         control.addTarget(self, action: #selector(segmentChanged(_ :)), for: .valueChanged)
         return control
     }()
@@ -54,36 +54,34 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Fake Store"
-        performSearch()
-        setupScrollView()
-        setupMainStackView()
-        setupCollectionView()
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        networkManager.loadProducts(category: .all)
-        networkManager.delegate = self
-        collectionView.reloadData()
-        showButton()
+        setupScrollView()
+        setupMainStackView()
+        setupCollectionView()
+        performSearch()
         
+        showButton()
         navigationBar()
+      
     }
     
     // MARK: - Helper Methods
     
     func performSearch() {
         if let category = NetworkManager.Category(rawValue: segmentedControl.selectedSegmentIndex) {
-            networkManager.loadProducts(category: category)
-            //collectionView.reloadData()
-            //collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+            networkManager.loadProducts(category: category) { [weak self] products in
+                guard let products = products else { return }
+                self?.productResults = products
+                self?.collectionView.reloadData()
+            }
         }
-       //collectionView.reloadData()
-        //collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+      
     }
     @objc func segmentChanged(_ sender: UISegmentedControl) {
         performSearch()
-        collectionView.reloadData()
-       // collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
 
     }
     // MARK: - Navigation
@@ -137,9 +135,7 @@ class MainViewController: UIViewController {
         
         scrollView.addSubview(mainStackView)
         let contentLayoutGuide = scrollView.contentLayoutGuide
-      
-      //1
-      //view.addSubview(mainStackView)
+
       
       NSLayoutConstraint.activate([
         //3
@@ -212,6 +208,7 @@ class MainViewController: UIViewController {
     
 }
 
+
 // MARK: - Data Source
 extension MainViewController: UICollectionViewDataSource {
     
@@ -223,8 +220,10 @@ extension MainViewController: UICollectionViewDataSource {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainViewCollectionViewCell.identifier, for: indexPath) as! MainViewCollectionViewCell
       let listOfProduct = productResults[indexPath.row]
         cell.configure(for: listOfProduct)
+
             return cell
     }
+   
 }
 // MARK: - Delegate
 extension MainViewController: UICollectionViewDelegate {
@@ -234,17 +233,4 @@ extension MainViewController: UICollectionViewDelegate {
         let listOfProduct = productResults[indexPath.row]
     }
 }
-
-extension MainViewController: NetworkManagerDelegate {
-    func didSendProductData(_ productService: NetworkManager, with product: [Product]) {
-        self.productResults.append(contentsOf: product)
-        
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            print(self.productResults.count)
-        }
-    }
-    
-}
-
 
