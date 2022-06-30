@@ -32,8 +32,8 @@ class MainViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: MainViewCollectionViewCell.identifier)
-        collectionView.showsHorizontalScrollIndicator = false
-        //collectionView.alwaysBounceVertical = true
+        collectionView.showsHorizontalScrollIndicator = true
+        collectionView.alwaysBounceHorizontal = true
        // collectionView.backgroundColor = .red
         
         return collectionView

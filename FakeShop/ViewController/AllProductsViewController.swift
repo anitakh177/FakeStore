@@ -26,8 +26,8 @@ class AllProductsViewController: UIViewController, UICollectionViewDelegate, UIC
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: MainViewCollectionViewCell.identifier)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceHorizontal = true
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
        // collectionView.backgroundColor = .red
         
         return collectionView
@@ -39,6 +39,8 @@ class AllProductsViewController: UIViewController, UICollectionViewDelegate, UIC
         setupCollectionView()
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        getBackButton()
     }
     
     private func setupCollectionView() {
@@ -52,6 +54,14 @@ class AllProductsViewController: UIViewController, UICollectionViewDelegate, UIC
            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10),
        ])
    }
+    
+    func getBackButton() {
+       let leftBarButton = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
+        navigationItem.leftBarButtonItem?.tintColor = .black
+    }
+    @objc private func dismissSelf() {
+        dismiss(animated: true, completion: nil)
+    }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

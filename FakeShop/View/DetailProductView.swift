@@ -144,10 +144,10 @@ class DetailProductView: UIView {
     
     
     private lazy var mainStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [imageStackView, titleLabel, categoryStackView, descriptionLabel, rateStackView, priceLabel, buttonStack])
+        let stack = UIStackView(arrangedSubviews: [imageStackView, titleLabel, categoryStackView, descriptionLabel, rateStackView, priceLabel])
         stack.axis = .vertical
-       // stack.distribution = .fillProportionally
-       // stack.alignment = .fill
+        stack.distribution = .fillProportionally
+        stack.alignment = .fill
         //stack.backgroundColor = .red
         stack.spacing = 20
         return stack

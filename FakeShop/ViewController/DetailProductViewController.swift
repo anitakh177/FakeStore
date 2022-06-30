@@ -12,31 +12,29 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
     var productResult: Product!
     var downloadTask: URLSessionDownloadTask?
     
-    private var scrollView = UIScrollView()
+    private let scrollView = UIScrollView()
     private let detailProductView = DetailProductView()
     private let mainStackView = UIStackView()
+   
     //private let buttonStack = StickyButtons()
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupScrollView()
-        getBackButton()
-        
-        
         setupMainStack()
+        getBackButton()
+    
         updateUI()
-       
-    
+
     }
-    
     
     private func setupMainStack() {
         scrollView.addSubview(mainStackView)
         
         mainStackView.axis = .vertical
         mainStackView.distribution = .equalSpacing
+        mainStackView.alignment = .fill
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         let contentLayoutGuide = scrollView.contentLayoutGuide
         
@@ -46,12 +44,13 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
             mainStackView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor)
+        
         ])
         //setupDetailView()
         mainStackView.addArrangedSubview(detailProductView)
     }
  
- /*   private func setupDetailView() {
+   /* private func setupDetailView() {
         mainStackView.addArrangedSubview(detailProductView)
         detailProductView.translatesAutoresizingMaskIntoConstraints = false
         detailProductView.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
@@ -60,9 +59,9 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
   */
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+       
+        
         view.addSubview(scrollView)
-        scrollView.isUserInteractionEnabled = true
-        scrollView.isScrollEnabled = true
         //scrollView.backgroundColor = .green
         let frameLayoutGuide = scrollView.frameLayoutGuide
         
