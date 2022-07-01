@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Product
-struct Product: Codable {
+struct Products: Codable {
     var id: Int = 0
     var title: String = ""
     var price: Double = 0.0

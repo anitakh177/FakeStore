@@ -34,9 +34,36 @@ class NetworkManager {
         let url = URL(string: "https://fakestoreapi.com/products/" + "\(kind)")
         return url!
     }
-   
+    var url = URL(string: "https://fakestoreapi.com/carts")
+    func addToCart( _ productToAdd: Product, completion: @escaping(Result<CartResponseElement, Error>) -> Void) {
+        
+        do {
+            var urlRequest = URLRequest(url: url!)
+            urlRequest.httpMethod = "POST"
+            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = try JSONEncoder().encode(productToAdd)
+            
+            let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+                
+                if let response = response {
+                    print(response)
+                }
+                guard let data = data else { return }
+                do {
+                    
+                    let productData = try JSONDecoder().decode(CartResponseElement.self, from: data)
+                    completion(.success(productData))
+                } catch {
+                    completion(.failure(fatalError("Decoding problem")))
+                }
+            }
+            dataTask.resume()
+        } catch {
+            completion(.failure(fatalError("Encoding problem")))
+        }
+    }
     
-    func loadProducts(category: Category, completion: @escaping(([Product]?) -> ())) {
+    func loadProducts(category: Category, completion: @escaping(([Products]?) -> ())) {
         
         let url = fakeStoreURL(category: category)
         
@@ -48,7 +75,7 @@ class NetworkManager {
         }
         guard let data = data else { return }
         do {
-            var products = try JSONDecoder().decode([Product].self, from: data)
+            var products = try JSONDecoder().decode([Products].self, from: data)
             products = self.parse(data: data)
             print(products)
             DispatchQueue.main.async {
@@ -63,10 +90,10 @@ class NetworkManager {
    
     }
     
-  private func parse(data: Data) -> [Product] {
+  private func parse(data: Data) -> [Products] {
         do {
             let decoder = JSONDecoder()
-            let result = try decoder.decode([Product].self, from: data)
+            let result = try decoder.decode([Products].self, from: data)
             return result
         } catch {
             print("JSON Error: \(error)")

@@ -177,7 +177,7 @@ class DetailProductView: UIView {
             
             }
   
-    public func configure(for result: Product) {
+    public func configure(for result: Products) {
         titleLabel.text = result.title
         priceLabel.text = ("\(String(format: "%.2f", result.price)) $")
         descriptionLabel.text = result.description

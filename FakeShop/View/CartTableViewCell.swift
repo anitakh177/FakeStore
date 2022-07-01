@@ -1,20 +1,19 @@
 //
-//  MainViewCollectionViewCell.swift
+//  CartTableViewCell.swift
 //  FakeShop
 //
-//  Created by anita on 08.06.2022.
+//  Created by anita on 01.07.2022.
 //
 
 import UIKit
 
-class MainViewCollectionViewCell: UICollectionViewCell {
+class CartTableViewCell: UITableViewCell {
     
-    static let identifier = "CustomCollectionView"
+    static let idetifier = "CartCell"
     var downloadTask: URLSessionDownloadTask?
     
     private let myImageView: UIImageView = {
         let imageView = UIImageView()
-        //imageView.backgroundColor = .gray
         imageView.contentMode = .scaleToFill
         return imageView
     }()
@@ -40,18 +39,6 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.backgroundColor = .white
-        contentView.addSubview(myImageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(priceLabel)
-        contentView.clipsToBounds = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -70,17 +57,4 @@ class MainViewCollectionViewCell: UICollectionViewCell {
             downloadTask = myImageView.loadImage(url: imageURL)
         }
     }
-    
-    // for diferent text in label
-
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        titleLabel.text = nil
-        priceLabel.text = nil
-        myImageView.image = nil
-    }
- 
-
 }
-

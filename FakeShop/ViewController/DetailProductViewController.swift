@@ -8,8 +8,10 @@
 import UIKit
 
 class DetailProductViewController: UIViewController, UIScrollViewDelegate {
+    var cart = CartManager()
     
-    var productResult: Product!
+    var productResult: Products!
+    var cartResult: Product!
     var downloadTask: URLSessionDownloadTask?
     
     private let scrollView = UIScrollView()
@@ -26,6 +28,7 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
         getBackButton()
     
         updateUI()
+        setupButtons()
 
     }
     
@@ -96,10 +99,15 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
     func getBackButton() {
        let leftBarButton = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
         navigationItem.leftBarButtonItem?.tintColor = .black
+        let rightBarButton = navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"), style: .plain, target: self, action: #selector(openCart))
     }
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
+    @objc private func openCart() {
+        
+    }
+   
     
     // MARK: UI
     func updateUI() {
@@ -110,7 +118,7 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
 }
 
 // MARK: - Buttons Configuration
-/*
+
 extension DetailProductViewController {
     
      func buyButton() -> UIButton {
@@ -131,9 +139,31 @@ extension DetailProductViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 45).isActive = true
         button.contentHorizontalAlignment = .right
+        button.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
         
         return button
     }
+    
+    @objc func addToCart() {
+        cart.addToCart(product: productResult)
+        print(cart.products.count)
+    }
+    
+  /*  @objc func addToCart() {
+        let postRequest = NetworkManager()
+        
+        postRequest.addToCart(cartResult, completion: { result in
+            switch result {
+            case .success(let product):
+                //product = productResult
+                print("The product has been sent: \(product)")
+            case .failure(let error):
+                print("An error occured \(error)")
+            }
+            
+        })
+    }
+   */
     
     func setupButtons() {
         let buttonStack = UIStackView()
@@ -159,4 +189,4 @@ extension DetailProductViewController {
     
     
 }
-*/
+

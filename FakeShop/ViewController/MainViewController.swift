@@ -16,7 +16,7 @@ class MainViewController: UIViewController {
     private var scrollView = UIScrollView()
   
     private var networkManager = NetworkManager()
-    private var productResults = [Product]()
+    private var productResults = [Products]()
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()

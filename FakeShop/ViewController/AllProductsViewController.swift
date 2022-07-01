@@ -10,7 +10,7 @@ import UIKit
 class AllProductsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
    
     
-    var productResults = [Product]()
+    var productResults = [Products]()
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
