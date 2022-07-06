@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import Combine
 
 class DetailProductViewController: UIViewController, UIScrollViewDelegate {
+   
     var cart = CartManager()
+   
     
     var productResult: Products!
-    var cartResult: Product!
+    
     var downloadTask: URLSessionDownloadTask?
     
     private let scrollView = UIScrollView()
@@ -105,7 +108,14 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
         dismiss(animated: true, completion: nil)
     }
     @objc private func openCart() {
+        let cartVC = CartViewController()
+        let navVC = UINavigationController(rootViewController: cartVC)
+        navVC.modalPresentationStyle = .fullScreen
+        let results = cart.products
+        cartVC.cartResult.products = results
         
+    
+        present(navVC, animated: true)
     }
    
     
@@ -119,7 +129,9 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
 
 // MARK: - Buttons Configuration
 
-extension DetailProductViewController {
+extension DetailProductViewController: AddProduct {
+   
+    
     
      func buyButton() -> UIButton {
         let button = UIButton(type: .system)
@@ -143,10 +155,13 @@ extension DetailProductViewController {
         
         return button
     }
-    
+   
     @objc func addToCart() {
         cart.addToCart(product: productResult)
-        print(cart.products.count)
+        print(cart.total)
+    }
+    func updateCartVC(cart: CartManager) {
+        
     }
     
   /*  @objc func addToCart() {

@@ -4,13 +4,13 @@
 //
 //  Created by anita on 01.07.2022.
 //
-
+import Combine
 import Foundation
 
 // chages in this class will be updated in the ui
 class CartManager {
     
-    private(set) var products: [Products] = []
+    var products: [Products] = []
     private(set) var total: Double = 0.0
     
     func addToCart(product: Products) {
