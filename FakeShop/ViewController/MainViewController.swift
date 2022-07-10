@@ -63,7 +63,7 @@ class MainViewController: UIViewController {
         setupCollectionView()
         performSearch()
         
-        showButton()
+         showButton()
         navigationBar()
       
     }
@@ -136,7 +136,6 @@ class MainViewController: UIViewController {
         scrollView.addSubview(mainStackView)
         let contentLayoutGuide = scrollView.contentLayoutGuide
 
-      
       NSLayoutConstraint.activate([
         //3
         mainStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -164,15 +163,18 @@ class MainViewController: UIViewController {
     }
 
      private func setupCollectionView() {
-        view.addSubview(collectionView)
+        scrollView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        //collectionView.backgroundColor = .blue
+        collectionView.backgroundColor = .blue
+         let contentLayoutGuide = scrollView.contentLayoutGuide
+         
         NSLayoutConstraint.activate([
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 450),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
+            collectionView.leadingAnchor.constraint(equalTo: contentLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor, constant: 350),
+            collectionView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor, constant: -50),
+            collectionView.heightAnchor.constraint(equalToConstant: 270)
         ])
     }
     
@@ -183,13 +185,14 @@ class MainViewController: UIViewController {
         button.backgroundColor = .black
         button.layer.cornerRadius = 23
         button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
+        scrollView.addSubview(button)
         
+        let frameLayoutGuide = scrollView.frameLayoutGuide
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.widthAnchor.constraint(equalToConstant: 250),
             button.heightAnchor.constraint(equalToConstant: 45),
-            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+            button.bottomAnchor.constraint(equalTo: frameLayoutGuide.bottomAnchor, constant: -5)
         
         ])
         

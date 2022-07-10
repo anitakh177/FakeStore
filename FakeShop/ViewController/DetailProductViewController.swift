@@ -32,14 +32,15 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
     
         updateUI()
         setupButtons()
-
+       
+       
     }
     
     private func setupMainStack() {
         scrollView.addSubview(mainStackView)
         
         mainStackView.axis = .vertical
-        mainStackView.distribution = .equalSpacing
+        mainStackView.distribution = .fill
         mainStackView.alignment = .fill
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         let contentLayoutGuide = scrollView.contentLayoutGuide
@@ -49,20 +50,23 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
             mainStackView.leadingAnchor.constraint(equalTo: contentLayoutGuide.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor)
+            mainStackView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
+            //mainStackView.heightAnchor.constraint(equalToConstant: 1000 )
         
         ])
         //setupDetailView()
-        mainStackView.addArrangedSubview(detailProductView)
+   mainStackView.addArrangedSubview(detailProductView)
     }
  
-   /* private func setupDetailView() {
+    private func setupDetailView() {
         mainStackView.addArrangedSubview(detailProductView)
         detailProductView.translatesAutoresizingMaskIntoConstraints = false
-        detailProductView.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
+        //detailProductView.heightAnchor.constraint(lessThanOrEqualToConstant: 1000).isActive = true
+       // detailProductView.heightAnchor.constraint(lessThanOrEqualToConstant: 1000).isActive = true
+       
         
     }
-  */
+  
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
        
@@ -75,7 +79,7 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
             frameLayoutGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             frameLayoutGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             frameLayoutGuide.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            frameLayoutGuide.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            frameLayoutGuide.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40)
         ])
         
     }
@@ -98,11 +102,16 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
     */
     
     // MARK: Navigation
-    
+    let viewModel = CustomCartButton()
+   // cartButton.configure(with: viewModel)
+
     func getBackButton() {
        let leftBarButton = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
         navigationItem.leftBarButtonItem?.tintColor = .black
-        let rightBarButton = navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"), style: .plain, target: self, action: #selector(openCart))
+     //  let rightBarButton = navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cart"), style: .plain, target: self, action: #selector(openCart))
+        let button = navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonView)
+        
+       
     }
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
@@ -125,36 +134,36 @@ class DetailProductViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
-}
+
 
 // MARK: - Buttons Configuration
 
-extension DetailProductViewController: AddProduct {
-   
-    
-    
-     func buyButton() -> UIButton {
+
+    private var buyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Buy now", for: .normal)
-        button.backgroundColor = .black
+        //button.backgroundColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 45).isActive = true
         button.contentHorizontalAlignment = .left
         
         return button
-    }
+    }()
     
-    private func cartButton() -> UIButton {
-        let button = UIButton(type: .system)
+    private let cartButton: UIButton = {
+        let button = UIButton()
         button.setImage(UIImage(systemName: "cart"), for: .normal)
         button.backgroundColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        
+    
+       button.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        
         button.contentHorizontalAlignment = .right
         button.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
         
         return button
-    }
+    }()
    
     @objc func addToCart() {
         cart.addToCart(product: productResult)
@@ -163,43 +172,30 @@ extension DetailProductViewController: AddProduct {
     func updateCartVC(cart: CartManager) {
         
     }
-    
-  /*  @objc func addToCart() {
-        let postRequest = NetworkManager()
-        
-        postRequest.addToCart(cartResult, completion: { result in
-            switch result {
-            case .success(let product):
-                //product = productResult
-                print("The product has been sent: \(product)")
-            case .failure(let error):
-                print("An error occured \(error)")
-            }
-            
-        })
-    }
-   */
-    
-    func setupButtons() {
+    private func setupButtons() {
         let buttonStack = UIStackView()
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         buttonStack.alignment = .bottom
         buttonStack.axis = .horizontal
-        buttonStack.distribution = .fillProportionally
-        buttonStack.backgroundColor = .yellow
-        buttonStack.addArrangedSubview(buyButton())
-        buttonStack.addArrangedSubview(cartButton())
+        buttonStack.distribution = .fill
+        //buttonStack.backgroundColor = .yellow
+        buttonStack.addArrangedSubview(buyButton)
+        buttonStack.addArrangedSubview(cartButton)
         
         view.addSubview(buttonStack)
+        //let frameLayoutGuide = scrollView.frameLayoutGuide
         NSLayoutConstraint.activate([
             buttonStack.widthAnchor.constraint(equalTo: view.widthAnchor),
-            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
-            //buttonStack.heightAnchor.constraint(equalToConstant: 100),
-            //buttonStack.leftAnchor.constraint(equalTo: view.leftAnchor),
-            //buttonStack.rightAnchor.constraint(equalTo: view.rightAnchor),
+            //buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+           // buttonStack.heightAnchor.constraint(equalToConstant: 100),
+           //buttonStack.leftAnchor.constraint(equalTo: frameLayoutGuide.leftAnchor),
+           // buttonStack.rightAnchor.constraint(equalTo: frameLayoutGuide.rightAnchor),
+           // buttonStack.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor, constant: -500)
             
         ])
+      
+        
     }
     
     

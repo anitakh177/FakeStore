@@ -148,7 +148,6 @@ class DetailProductView: UIView {
         stack.axis = .vertical
         stack.distribution = .fillProportionally
         stack.alignment = .fill
-        //stack.backgroundColor = .red
         stack.spacing = 20
         return stack
     }()
@@ -172,7 +171,8 @@ class DetailProductView: UIView {
             mainStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             mainStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -15),
-            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.heightAnchor.constraint(equalTo: heightAnchor)
            ])
             
             }
