@@ -13,13 +13,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let winScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: winScene)
+       guard let windowScene = (scene as? UIWindowScene) else { return }
+     /* window = UIWindow(windowScene: winScene)
         let navController = UINavigationController()
         let mainVC = MainViewController()
         navController.viewControllers = [mainVC]
         window?.rootViewController = navController
+        window?.makeKeyAndVisible() */
+        
+        
+        
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = createTabBar()
         window?.makeKeyAndVisible()
+    }
+    
+    private func createMainNavController() -> UINavigationController {
+        let mainVC = MainViewController()
+        mainVC.title = "Fake Shop"
+        mainVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        
+        return UINavigationController(rootViewController: mainVC)
+    }
+    
+    private func createFavoriteNavController() -> UINavigationController {
+        let favVC = FavoriteViewController()
+        favVC.title = "Favorites"
+        favVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        return UINavigationController(rootViewController: favVC)
+    }
+    
+    private func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        UITabBar.appearance().tintColor = .black
+        tabBar.viewControllers = [createMainNavController(), createFavoriteNavController()]
+        
+        return tabBar
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -65,7 +65,22 @@ class MainViewController: UIViewController {
         
          showButton()
         navigationBar()
+        
       
+      
+    }
+    
+    // MARK: - Tab Bar
+    
+    private func createTabBar() {
+        let tabBarVC = UITabBarController()
+        
+        let vc1 = MainViewController()
+        let vc2 = FavoriteViewController()
+        
+        tabBarVC.setViewControllers([vc1, vc2], animated: false)
+        tabBarVC.modalPresentationStyle = .fullScreen
+        present(tabBarVC, animated: true)
     }
     
     // MARK: - Helper Methods
@@ -131,7 +146,6 @@ class MainViewController: UIViewController {
       mainStackView.distribution = .fill
       mainStackView.spacing = 10
       mainStackView.translatesAutoresizingMaskIntoConstraints = false
-     // mainStackView.backgroundColor = .yellow
         
         scrollView.addSubview(mainStackView)
         let contentLayoutGuide = scrollView.contentLayoutGuide
@@ -151,7 +165,7 @@ class MainViewController: UIViewController {
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
-        //scrollView.backgroundColor = .green
+        
         let frameLayoutGuide = scrollView.frameLayoutGuide
         
         NSLayoutConstraint.activate([
@@ -165,15 +179,14 @@ class MainViewController: UIViewController {
      private func setupCollectionView() {
         scrollView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .blue
          let contentLayoutGuide = scrollView.contentLayoutGuide
          
         NSLayoutConstraint.activate([
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionView.leadingAnchor.constraint(equalTo: contentLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: contentLayoutGuide.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor, constant: 350),
             collectionView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor, constant: -50),
+            collectionView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 20),
             collectionView.heightAnchor.constraint(equalToConstant: 270)
         ])
     }
@@ -233,7 +246,7 @@ extension MainViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigateToDeatilVC(with: indexPath)
-        let listOfProduct = productResults[indexPath.row]
+        _ = productResults[indexPath.row]
     }
 }
 
