@@ -31,7 +31,7 @@ class DetailProductViewController: UIViewController {
     
         setupScrollView()
         setupMainStack()
-        navigationButtons(with: cart.products.count)
+        navigationButtons()
 
         updateUI()
         setupButtonView()
@@ -79,7 +79,8 @@ class DetailProductViewController: UIViewController {
    
     // MARK: Navigation
   
-    private func navigationButtons(with count: Int) {
+   // private func navigationButtons() {
+     var badgeCount: UILabel = {
         let badgeCount = UILabel(frame: CGRect(x: 22, y: -05, width: 20, height: 20))
         badgeCount.layer.borderColor = UIColor.clear.cgColor
         badgeCount.layer.borderWidth = 2
@@ -89,14 +90,15 @@ class DetailProductViewController: UIViewController {
         badgeCount.textColor = .white
         badgeCount.font = badgeCount.font.withSize(12)
         badgeCount.backgroundColor = .red
-        badgeCount.text = "\(cart.products.count)"
-    
+        return badgeCount
+    }()
+    private func navigationButtons() {
         let rightBarButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
        
         rightBarButton.setImage(UIImage(systemName: "cart"), for: .normal)
         rightBarButton.addTarget(self, action: #selector(openCart), for: .touchUpInside)
         rightBarButton.addSubview(badgeCount)
-        
+    
         let rightBarButtomItem = UIBarButtonItem(customView: rightBarButton)
         navigationItem.rightBarButtonItem = rightBarButtomItem
 
@@ -123,10 +125,9 @@ class DetailProductViewController: UIViewController {
     // MARK: UI
    private func updateUI() {
         detailProductView.configure(for: productResult)
-        
     }
     
-  private func setupButtonView() {
+   private func setupButtonView() {
       view.addSubview(buttonView)
       buttonView.translatesAutoresizingMaskIntoConstraints = false
       
@@ -147,6 +148,8 @@ class DetailProductViewController: UIViewController {
         button.setTitle("Buy now", for: .normal)
         button.backgroundColor = .black
         button.setTitleColor(UIColor.white, for: .normal)
+        button.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 45).isActive = true
         button.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -160,7 +163,7 @@ class DetailProductViewController: UIViewController {
         button.setImage(UIImage(systemName: "cart"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = .black
-    
+        button.titleLabel?.textAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         
     
@@ -175,8 +178,9 @@ class DetailProductViewController: UIViewController {
     @objc func addToCart() {
         cart.addToCart(product: productResult)
         tappedCount += 1
-        print(tappedCount)
-        print(cart.total)
+        badgeCount.text = "\(tappedCount)"
+        //print(tappedCount)
+        //print(cart.total)
     }
     func updateCartVC(cart: CartManager) {
         

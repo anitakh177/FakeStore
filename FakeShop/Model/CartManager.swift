@@ -6,13 +6,11 @@
 //
 
 import Foundation
-protocol Subject {
-    func addToCart(product: Products)
-    func removeFromCart(product: Products)
-    
-}
+
 // chages in this class will be updated in the ui
-class CartManager: Subject {
+class CartManager {
+    
+    var cartProducts: [Products] = [] 
     
     var products: [Products] = []
     private(set) var total: Double = 0.0
