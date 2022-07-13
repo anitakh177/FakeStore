@@ -24,7 +24,6 @@ class ButtonView: UIView {
             buttonView.heightAnchor.constraint(equalToConstant: 70),
             buttonView.widthAnchor.constraint(equalTo: widthAnchor),
             
-        
         ])
     }
     

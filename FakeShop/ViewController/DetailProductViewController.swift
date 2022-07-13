@@ -8,22 +8,19 @@
 import UIKit
 import Combine
 
-class DetailProductViewController: UIViewController {
-   
-    var cart = CartManager()
+class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     
+    var cart = CartManager()
     var productResult: Products!
-    var tappedCount: Int = 0
     
     var downloadTask: URLSessionDownloadTask?
     
     private let scrollView = UIScrollView()
+    private let mainStackView = UIStackView()
     private let detailProductView = DetailProductView()
     private let buttonView = ButtonView()
-    private let mainStackView = UIStackView()
+    
    
-    //private let buttonStack = StickyButtons()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -38,7 +35,7 @@ class DetailProductViewController: UIViewController {
        // setupButtons()
     
     }
-    
+    // MARK: Layout
     private func setupMainStack() {
         scrollView.addSubview(mainStackView)
         
@@ -57,8 +54,6 @@ class DetailProductViewController: UIViewController {
         ])
             mainStackView.addArrangedSubview(detailProductView)
     }
- 
-   
   
     private func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -75,8 +70,6 @@ class DetailProductViewController: UIViewController {
         
     }
     
-   
-   
     // MARK: Navigation
   
    // private func navigationButtons() {
@@ -117,6 +110,8 @@ class DetailProductViewController: UIViewController {
         navVC.modalPresentationStyle = .fullScreen
         let results = cart.products
         cartVC.cartResult.products = results
+        let total = cart.total
+        cartVC.cartResult.total = total
     
         present(navVC, animated: true)
     }
@@ -177,14 +172,13 @@ class DetailProductViewController: UIViewController {
    
     @objc func addToCart() {
         cart.addToCart(product: productResult)
-        tappedCount += 1
-        badgeCount.text = "\(tappedCount)"
-        //print(tappedCount)
-        //print(cart.total)
-    }
-    func updateCartVC(cart: CartManager) {
+        displayCartCount(number: cart.products.count)
         
     }
+    func displayCartCount(number: Int) {
+        badgeCount.text = "\(number)"
+    }
+    
     private func setupButtons() {
         let buttonStack = UIStackView()
         buttonStack.translatesAutoresizingMaskIntoConstraints = false

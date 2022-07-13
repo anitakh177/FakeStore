@@ -6,14 +6,20 @@
 //
 
 import Foundation
+import UIKit
 
-// chages in this class will be updated in the ui
+protocol CartViewManagerDelegate {
+    func displayCartCount(number: Int)
+}
+protocol CartManagerShowTotalDelegate {
+    func displayTotal(number: Double)
+}
+
 class CartManager {
     
-    var cartProducts: [Products] = [] 
-    
+    var cartProducts: [Products] = []
     var products: [Products] = []
-    private(set) var total: Double = 0.0
+    var total: Double = 0.0
     
     func addToCart(product: Products) {
         products.append(product)

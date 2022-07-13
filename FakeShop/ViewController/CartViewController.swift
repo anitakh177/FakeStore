@@ -7,14 +7,12 @@
 
 import UIKit
 
-protocol AddProduct: AnyObject {
-    func updateCartVC(cart: CartManager)
-}
+class CartViewController: UIViewController, CartManagerShowTotalDelegate {
 
-class CartViewController: UIViewController, UITableViewDataSource{
    
-    weak var delegate: AddProduct?
     var cartResult = CartManager()
+    
+    private var cartFooterView = CartFooterView()
     
     private var tableView: UITableView = {
         let table = UITableView()
@@ -30,22 +28,49 @@ class CartViewController: UIViewController, UITableViewDataSource{
         view.addSubview(tableView)
         tableView.reloadData()
         getBack()
-        print(cartResult.products)
-        
+        setupFooterView()
+        showTotal()
+        print(cartResult.total)
+       
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+        tableView.frame = view.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height-100))
+        
+    }
+    
+    private func setupFooterView() {
+        view.addSubview(cartFooterView)
+        cartFooterView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            cartFooterView.heightAnchor.constraint(equalToConstant: 100),
+            cartFooterView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            cartFooterView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            cartFooterView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    internal func displayTotal(number: Double) {
+        cartFooterView.totalSumLabel.text = "\(number)$"
+    }
+    
+   
+    private func showTotal() {
+        displayTotal(number: cartResult.total)
     }
     
     func getBack() {
-       let leftBarButton = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
+        _ = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
-    
+}
+
+extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cartResult.products.count
     }
@@ -53,8 +78,8 @@ class CartViewController: UIViewController, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CartTableViewCell.idetifier, for: indexPath) as! CartTableViewCell
         let listOfProduct = cartResult.products[indexPath.row]
-        cell.configureCart(for: listOfProduct)
-       
+       cell.configureCart(for: listOfProduct)
+        //cell.configureCart(with: CartModelView(with: listOfProduct))
         return cell
     }
     
