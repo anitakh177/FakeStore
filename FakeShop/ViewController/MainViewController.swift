@@ -63,10 +63,9 @@ class MainViewController: UIViewController {
         setupCollectionView()
         performSearch()
         
-         showButton()
+        showButton()
         navigationBar()
         
-      
       
     }
     

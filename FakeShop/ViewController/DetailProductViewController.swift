@@ -12,6 +12,7 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     
     var cart = CartManager()
     var productResult: Products!
+    lazy var coreDataStack = CoreDataStack(modelName: "ProductEntity")
     
     var downloadTask: URLSessionDownloadTask?
     
@@ -173,6 +174,15 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     @objc func addToCart() {
         cart.addToCart(product: productResult)
         displayCartCount(number: cart.products.count)
+       
+        let product = ProductEntity(context: self.coreDataStack.managedContext)
+        product.name = productResult.title
+        product.price = productResult.price
+        product.productDescription = productResult.description
+        product.image = productResult.image
+        product.productID = productResult.id
+        self.coreDataStack.saveData()
+        
         
     }
     func displayCartCount(number: Int) {

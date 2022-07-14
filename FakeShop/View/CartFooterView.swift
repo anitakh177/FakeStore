@@ -38,19 +38,46 @@ class CartFooterView: UIView {
         return stack
     }()
     
+   private lazy var productsCount: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.text = "Amount"
+        return label
+    }()
+    
+    lazy var totalAmountOfProducts: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        return label
+    }()
+  private  lazy var totalProducts: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [productsCount, totalAmountOfProducts])
+        stack.axis = .horizontal
+        stack.distribution = .fillProportionally
+        return stack
+    }()
+    
     private func setupView() {
         addSubview(cartFooterView)
         cartFooterView.addSubview(totalStack)
+        cartFooterView.addSubview(totalProducts)
         cartFooterView.translatesAutoresizingMaskIntoConstraints = false
         totalStack.translatesAutoresizingMaskIntoConstraints = false
+        totalProducts.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
            cartFooterView.heightAnchor.constraint(equalTo: heightAnchor),
            cartFooterView.widthAnchor.constraint(equalTo: widthAnchor),
            
-           totalStack.widthAnchor.constraint(equalTo: cartFooterView.widthAnchor),
            totalStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+           totalStack.leadingAnchor.constraint(equalTo: cartFooterView.leadingAnchor, constant: 10),
+           totalStack.trailingAnchor.constraint(equalTo: cartFooterView.trailingAnchor, constant: -10),
            totalStack.topAnchor.constraint(equalTo: cartFooterView.topAnchor, constant: 5),
+           
+           totalProducts.leadingAnchor.constraint(equalTo: cartFooterView.leadingAnchor, constant: 10),
+           totalProducts.trailingAnchor.constraint(equalTo: cartFooterView.trailingAnchor, constant: -10),
+           totalProducts.centerXAnchor.constraint(equalTo: centerXAnchor),
+           totalProducts.topAnchor.constraint(equalTo: totalStack.bottomAnchor, constant: 10)
         ])
     }
     

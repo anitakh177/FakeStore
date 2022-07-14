@@ -6,13 +6,26 @@
 //
 
 import UIKit
+import CoreData
 
-class CartViewController: UIViewController, CartManagerShowTotalDelegate {
-
+class CartViewController: UIViewController, NSFetchedResultsControllerDelegate {
+    var downloadTask: URLSessionDownloadTask?
    
+    lazy var coreDataStack = CoreDataStack(modelName: "ProductEntity")
     var cartResult = CartManager()
+   
     
     private var cartFooterView = CartFooterView()
+    private var cartCell = CartTableViewCell()
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<ProductEntity> = {
+        let fetchRequest: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: coreDataStack.managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        return fetchedResultsController
+    }()
     
     private var tableView: UITableView = {
         let table = UITableView()
@@ -30,16 +43,25 @@ class CartViewController: UIViewController, CartManagerShowTotalDelegate {
         getBack()
         setupFooterView()
         showTotal()
-        print(cartResult.total)
-       
+        cartStepper()
     }
+    
+   
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.frame(forAlignmentRect: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height-100))
         
     }
-    
+    private func cartStepper() {
+        cartCell.stepper.addTarget(self, action: #selector(changeValueStepper), for: .valueChanged)
+    }
+    @objc func changeValueStepper(_ sender:UIStepper!) {
+        displayTotal(number: cartResult.total)
+        displayCartCount(number: cartResult.products.count)
+        print("UIStepper is now \(Int(sender.value))")
+        
+    }
     private func setupFooterView() {
         view.addSubview(cartFooterView)
         cartFooterView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,15 +74,7 @@ class CartViewController: UIViewController, CartManagerShowTotalDelegate {
         ])
     }
     
-    internal func displayTotal(number: Double) {
-        cartFooterView.totalSumLabel.text = "\(number)$"
-    }
-    
    
-    private func showTotal() {
-        displayTotal(number: cartResult.total)
-    }
-    
     func getBack() {
         _ = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
         navigationItem.leftBarButtonItem?.tintColor = .black
@@ -70,7 +84,8 @@ class CartViewController: UIViewController, CartManagerShowTotalDelegate {
     }
 }
 
-extension CartViewController: UITableViewDataSource {
+
+extension CartViewController: UITableViewDataSource ,CartViewManagerDelegate, CartManagerShowTotalDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cartResult.products.count
     }
@@ -82,6 +97,21 @@ extension CartViewController: UITableViewDataSource {
         //cell.configureCart(with: CartModelView(with: listOfProduct))
         return cell
     }
+     func displayTotal(number: Double) {
+        cartFooterView.totalSumLabel.text = "\(number)$"
+        
+    }
+   
+    private func showTotal() {
+        displayTotal(number: cartResult.total)
+        displayCartCount(number: cartResult.products.count)
+       
+    }
+    func displayCartCount(number: Int) {
+        cartFooterView.totalAmountOfProducts.text = "\(number)"
+    }
+    
     
     
 }
+

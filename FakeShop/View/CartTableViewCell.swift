@@ -12,14 +12,14 @@ class CartTableViewCell: UITableViewCell {
     static let idetifier = "CartCell"
     var downloadTask: URLSessionDownloadTask?
     
-    private let myImageView: UIImageView = {
+    let myImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.backgroundColor = .gray
         return imageView
     }()
     
-    private let titleLabel: UILabel = {
+     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Title"
         label.clipsToBounds = true
@@ -31,7 +31,7 @@ class CartTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let priceLabel: UILabel = {
+     let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "Price"
         label.font = UIFont(name: "GeezaPro-Bold", size: 20)
@@ -40,12 +40,18 @@ class CartTableViewCell: UITableViewCell {
         return label
     }()
     
+    let stepper: UIStepper = {
+        let stepper = UIStepper()
+        
+        return stepper
+    }()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         //contentView.backgroundColor = .blue
         contentView.addSubview(myImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)
+        contentView.addSubview(stepper)
         contentView.clipsToBounds = true
     }
     
@@ -58,6 +64,7 @@ class CartTableViewCell: UITableViewCell {
         myImageView.frame = CGRect(x: 5, y: 5, width: 100, height: 120)
         titleLabel.frame = CGRect(x: 20+myImageView.frame.size.width, y: 0, width: 250, height: 70)
         priceLabel.frame = CGRect(x: 20+myImageView.frame.size.width, y: 30+titleLabel.frame.size.height, width: 110, height: 25)
+        stepper.frame = CGRect(x: 150+priceLabel.frame.size.width, y: 30+titleLabel.frame.size.height, width: 110, height: 25)
     }
     
    public func configureCart(for result: Products) {
