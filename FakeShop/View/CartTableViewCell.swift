@@ -67,13 +67,13 @@ class CartTableViewCell: UITableViewCell {
         stepper.frame = CGRect(x: 150+priceLabel.frame.size.width, y: 30+titleLabel.frame.size.height, width: 110, height: 25)
     }
     
-   public func configureCart(for result: Products) {
-        titleLabel.text = result.title
+   public func configureCart(for result: ProductEntity) {
+       titleLabel.text = result.name
         priceLabel.text = ("\(String(format: "%.2f", result.price)) $")
         
         myImageView.image = UIImage(systemName: "square")
         myImageView.tintColor = .gray
-        if let imageURL = URL(string: result.image) {
+       if let imageURL = URL(string: result.image!) {
             downloadTask = myImageView.loadImage(url: imageURL)
         }
     }
