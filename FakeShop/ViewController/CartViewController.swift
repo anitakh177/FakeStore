@@ -97,10 +97,18 @@ extension CartViewController: CartViewManagerDelegate, CartManagerShowTotalDeleg
     func displayTotal(number: Double) {
        cartFooterView.totalSumLabel.text = "\(number)$"
    }
-  
+
    private func showTotal() {
        displayTotal(number: cartResult.total)
-       displayCartCount(number: cartResult.products.count)
+       //displayCartCount(number: cartResult.products.count)
+       do {
+           let request: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
+           let numberOfProducts = try coreDataStack.managedContext.count(for: request)
+           displayCartCount(number: numberOfProducts)
+       } catch {
+           print("error to show number of products")
+       }
+      
    }
    func displayCartCount(number: Int) {
        cartFooterView.totalAmountOfProducts.text = "\(number)"
@@ -110,9 +118,9 @@ extension CartViewController: CartViewManagerDelegate, CartManagerShowTotalDeleg
 extension CartViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let products = fetchedResultsController?.fetchedObjects else { return 0}
-       // return cartResult.products.count
-        return products.count
+         //return cartResult.products.count
+        let sectionInfo = fetchedResultsController?.sections![section]
+        return sectionInfo?.numberOfObjects ?? 0
     }
     
     
@@ -124,25 +132,15 @@ extension CartViewController: UITableViewDataSource {
         //cell.configureCart(with: CartModelView(with: listOfProduct))
         return cell
     }
-  /*  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-       
-       let action = UIContextualAction(style: .destructive, title: "Delete", handler: { [self] (_, _, completionHandler) in
-           tableView.deselectRow(at: indexPath, animated: true)
-           let product = self.fetchedResultsController?.object(at: indexPath)
-           coreDataStack.managedContext.delete(product!)
-           coreDataStack.saveData()
-           completionHandler(true)
-       })
-        action.image = UIImage(systemName: "trash")
-        let configuration = UISwipeActionsConfiguration(actions: [action])
-        return configuration
-   } */
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableView.deleteRows(at: [indexPath], with: .fade)
+    
             let product = self.fetchedResultsController?.object(at: indexPath)
             coreDataStack.managedContext.delete(product!)
             coreDataStack.saveData()
+            //tableView.deleteRows(at: [indexPath], with: .fade)
+           
         }
     }
 }
@@ -157,11 +155,6 @@ extension CartViewController: UITableViewDelegate {
 }
 
 extension CartViewController: NSFetchedResultsControllerDelegate {
-    
-   /* func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
-    } */
-   
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }

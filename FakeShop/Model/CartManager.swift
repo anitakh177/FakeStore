@@ -16,7 +16,7 @@ protocol CartManagerShowTotalDelegate {
 }
 
 class CartManager {
-    
+    var coreDataStack = CoreDataStack(modelName: "ProductEntity")
     
    // var cartProducts: [Products] = []
     var products: [Products] = []

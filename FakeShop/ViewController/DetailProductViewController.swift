@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import CoreData
 
 class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     
@@ -34,6 +35,7 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
         updateUI()
         setupButtonView()
        // setupButtons()
+        showCount()
     
     }
     // MARK: Layout
@@ -172,8 +174,8 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     }()
    
     @objc func addToCart() {
-        cart.addToCart(product: productResult)
-        displayCartCount(number: cart.products.count)
+        //cart.addToCart(product: productResult)
+        //displayCartCount(number: cart.products.count)
        
         let product = ProductEntity(context: self.coreDataStack.managedContext)
         product.name = productResult.title
@@ -183,10 +185,18 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
         product.productID = productResult.id
         self.coreDataStack.saveData()
         
-        
     }
     func displayCartCount(number: Int) {
         badgeCount.text = "\(number)"
+    }
+    func showCount() {
+        do {
+            let request: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
+            let numberOfProducts = try coreDataStack.managedContext.count(for: request)
+            displayCartCount(number: numberOfProducts)
+        } catch {
+            print("error to show number of products")
+        }
     }
     
     private func setupButtons() {
