@@ -20,7 +20,6 @@ class CartViewController: UIViewController {
     private var cartCell = CartTableViewCell()
     
    
-    
     private var tableView: UITableView = {
         let table = UITableView()
         table.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.idetifier)
@@ -36,8 +35,9 @@ class CartViewController: UIViewController {
         tableView.reloadData()
         getBack()
         setupFooterView()
-        showTotal()
+    
         loadSavedData()
+        showCount()
     }
 
    
@@ -66,8 +66,7 @@ class CartViewController: UIViewController {
     
     
     @objc func changeValueStepper(_ sender:UIStepper!) {
-        displayTotal(number: cartResult.total)
-        displayCartCount(number: cartResult.products.count)
+       
         print("UIStepper is now \(Int(sender.value))")
         
     }
@@ -91,34 +90,81 @@ class CartViewController: UIViewController {
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
-}
-
-extension CartViewController: CartViewManagerDelegate, CartManagerShowTotalDelegate  {
-    func displayTotal(number: Double) {
-       cartFooterView.totalSumLabel.text = "\(number)$"
-   }
-
-   private func showTotal() {
-       displayTotal(number: cartResult.total)
-       //displayCartCount(number: cartResult.products.count)
-       do {
-           let request: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
-           let numberOfProducts = try coreDataStack.managedContext.count(for: request)
-           displayCartCount(number: numberOfProducts)
-       } catch {
-           print("error to show number of products")
-       }
-      
-   }
-   func displayCartCount(number: Int) {
-       cartFooterView.totalAmountOfProducts.text = "\(number)"
-   }
+    
+    func populateCountLabel() {
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: "ProductEntity")
+        fetchRequest.resultType = .countResultType
+        
+        do {
+            let countResult = try coreDataStack.managedContext.fetch(fetchRequest)
+            
+            let count = countResult.first?.intValue ?? 0
+            cartFooterView.totalAmountOfProducts.text = "\(count)"
+        } catch let error as NSError {
+            print("count not fetched \(error), \(error.userInfo)")
+        }
+    }
+    func populateTotalPriceLabel() {
+        let fetchRequest = NSFetchRequest<NSDictionary>(entityName: "ProductEntity")
+        fetchRequest.resultType = .dictionaryResultType
+        
+        let sumExpressionDesc = NSExpressionDescription()
+        sumExpressionDesc.name = "price"
+        
+        let totalPriceExp = NSExpression(forKeyPath: #keyPath(ProductEntity.price))
+        sumExpressionDesc.expression = NSExpression(forFunction: "sum:", arguments: [totalPriceExp])
+        
+        sumExpressionDesc.expressionResultType = .doubleAttributeType
+        
+        fetchRequest.propertiesToFetch = [sumExpressionDesc]
+        
+        do {
+            
+            let results = try coreDataStack.managedContext.fetch(fetchRequest)
+            
+            let resultDict = results.first
+            let totPrice = resultDict?["price"] as? Double ?? 0
+            
+            cartFooterView.totalSumLabel.text = "\(totPrice)"
+        } catch let error as NSError {
+            print("price not fetched \(error), \(error.userInfo)")
+        }
+    }
+    
+    func showCount() {
+        populateCountLabel()
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: coreDataStack.managedContext, queue: .main) { [weak self] _ in
+            self?.fetchProducts()
+        }
+        populateTotalPriceLabel()
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func fetchProducts() {
+        let fetchRequest: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
+        coreDataStack.managedContext.perform {
+            do {
+                let results = try fetchRequest.execute()
+                self.cartFooterView.totalAmountOfProducts.text = "\(results.count)"
+                var total = 0.0
+                results.forEach { item in
+                    total += item.price
+                }
+                
+                self.cartFooterView.totalSumLabel.text = "\(total)"
+                
+            } catch {
+                print("Unable to Execute Fetch Request, \(error)")
+            }
+        }
+    }
 }
 
 extension CartViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         //return cartResult.products.count
         let sectionInfo = fetchedResultsController?.sections![section]
         return sectionInfo?.numberOfObjects ?? 0
     }
@@ -135,11 +181,14 @@ extension CartViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-    
+            
             let product = self.fetchedResultsController?.object(at: indexPath)
+            
             coreDataStack.managedContext.delete(product!)
             coreDataStack.saveData()
-            //tableView.deleteRows(at: [indexPath], with: .fade)
+            
+           // cartFooterView.totalAmountOfProducts.text = "\(cartResult.products.count)"
+           //tableView.deleteRows(at: [indexPath], with: .fade)
            
         }
     }
@@ -149,8 +198,8 @@ extension CartViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
     }
-    
     
 }
 

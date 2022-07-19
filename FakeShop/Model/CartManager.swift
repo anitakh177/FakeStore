@@ -16,16 +16,13 @@ protocol CartManagerShowTotalDelegate {
 }
 
 class CartManager {
-    var coreDataStack = CoreDataStack(modelName: "ProductEntity")
-    
-   // var cartProducts: [Products] = []
+   
     var products: [Products] = []
     var total: Double = 0.0
     
     func addToCart(product: Products) {
         products.append(product)
         total += product.price
-       
     }
     
     func removeFromCart(product: Products) {

@@ -6,9 +6,9 @@
 //
 
 import UIKit
+import CoreData
 
 class MainViewController: UIViewController {
-    
     
     // MARK: Propeties
     private var mainView = MainView()
@@ -17,6 +17,8 @@ class MainViewController: UIViewController {
   
     private var networkManager = NetworkManager()
     private var productResults = [Products]()
+    
+    lazy var coreDataStack = CoreDataStack(modelName: "ProductEntity")
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -64,7 +66,8 @@ class MainViewController: UIViewController {
         performSearch()
         
         showButton()
-        navigationBar()
+        navigationButtons()
+        populateCountLabel()
         
       
     }
@@ -111,12 +114,56 @@ class MainViewController: UIViewController {
         present(navVC, animated: true)
     }
     
-    private func navigationBar() {
-        let rightBarButtonitem = UIBarButtonItem(image: UIImage(systemName: "bag"), style: .plain, target: self, action: nil)
-        rightBarButtonitem.tintColor = .black
-        navigationItem.rightBarButtonItem = rightBarButtonitem
+    
+    private var badgeCount: UILabel = {
+        let badgeCount = UILabel(frame: CGRect(x: 22, y: -05, width: 20, height: 20))
+        badgeCount.layer.borderColor = UIColor.clear.cgColor
+        badgeCount.layer.borderWidth = 2
+        badgeCount.layer.cornerRadius = badgeCount.bounds.size.height / 2
+        badgeCount.textAlignment = .center
+        badgeCount.layer.masksToBounds = true
+        badgeCount.textColor = .white
+        badgeCount.font = badgeCount.font.withSize(12)
+        badgeCount.backgroundColor = .red
+        return badgeCount
+    }()
+    private func navigationButtons() {
+        let rightBarButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+       
+        rightBarButton.setImage(UIImage(systemName: "cart.fill"), for: .normal)
+        rightBarButton.addTarget(self, action: #selector(openCart), for: .touchUpInside)
+        rightBarButton.addSubview(badgeCount)
+        rightBarButton.tintColor = .black
+    
+        let rightBarButtomItem = UIBarButtonItem(customView: rightBarButton)
+        navigationItem.rightBarButtonItem = rightBarButtomItem
+
     }
-  
+    @objc private func openCart() {
+        let cartVC = CartViewController()
+        let navVC = UINavigationController(rootViewController: cartVC)
+        navVC.modalPresentationStyle = .fullScreen
+        //let results = cart.products
+        //cartVC.cartResult.products = results
+       // let total = cart.total
+        //cartVC.cartResult.total = total
+        cartVC.coreDataStack = coreDataStack
+    
+        present(navVC, animated: true)
+    }
+    func populateCountLabel() {
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: "ProductEntity")
+        fetchRequest.resultType = .countResultType
+     
+        do {
+            let countResult = try coreDataStack.managedContext.fetch(fetchRequest)
+            
+            let count = countResult.first?.intValue ?? 0
+            badgeCount.text = "\(count)"
+        } catch let error as NSError {
+            print("count not fetched \(error), \(error.userInfo)")
+        }
+    }
  
     // MARK: - Alert message
     func showAlertWith(title: String, message: String, style: UIAlertController.Style = .alert) {

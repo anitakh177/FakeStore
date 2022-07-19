@@ -9,10 +9,12 @@ import UIKit
 import Combine
 import CoreData
 
-class DetailProductViewController: UIViewController, CartViewManagerDelegate {
+class DetailProductViewController: UIViewController {
     
     var cart = CartManager()
     var productResult: Products!
+    
+   
     lazy var coreDataStack = CoreDataStack(modelName: "ProductEntity")
     
     var downloadTask: URLSessionDownloadTask?
@@ -34,10 +36,10 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
 
         updateUI()
         setupButtonView()
-       // setupButtons()
         showCount()
-    
+      
     }
+  
     // MARK: Layout
     private func setupMainStack() {
         scrollView.addSubview(mainStackView)
@@ -75,8 +77,7 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     
     // MARK: Navigation
   
-   // private func navigationButtons() {
-     var badgeCount: UILabel = {
+    private var badgeCount: UILabel = {
         let badgeCount = UILabel(frame: CGRect(x: 22, y: -05, width: 20, height: 20))
         badgeCount.layer.borderColor = UIColor.clear.cgColor
         badgeCount.layer.borderWidth = 2
@@ -91,15 +92,17 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     private func navigationButtons() {
         let rightBarButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
        
-        rightBarButton.setImage(UIImage(systemName: "cart"), for: .normal)
+        rightBarButton.setImage(UIImage(systemName: "cart.fill"), for: .normal)
         rightBarButton.addTarget(self, action: #selector(openCart), for: .touchUpInside)
         rightBarButton.addSubview(badgeCount)
+        rightBarButton.tintColor = .black
     
         let rightBarButtomItem = UIBarButtonItem(customView: rightBarButton)
         navigationItem.rightBarButtonItem = rightBarButtomItem
 
 
        let leftBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
+        leftBarButton.tintColor = .black
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem = leftBarButton
     }
@@ -111,10 +114,11 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
         let cartVC = CartViewController()
         let navVC = UINavigationController(rootViewController: cartVC)
         navVC.modalPresentationStyle = .fullScreen
-        let results = cart.products
-        cartVC.cartResult.products = results
-        let total = cart.total
-        cartVC.cartResult.total = total
+        //let results = cart.products
+        //cartVC.cartResult.products = results
+       // let total = cart.total
+        //cartVC.cartResult.total = total
+        cartVC.coreDataStack = coreDataStack
     
         present(navVC, animated: true)
     }
@@ -137,7 +141,34 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
       ])
       setupButtons()
     }
-
+// MARK: - Helper Methods
+    
+    func populateCountLabel() {
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: "ProductEntity")
+        fetchRequest.resultType = .countResultType
+     
+        do {
+            let countResult = try coreDataStack.managedContext.fetch(fetchRequest)
+            
+            let count = countResult.first?.intValue ?? 0
+            badgeCount.text = "\(count)"
+        } catch let error as NSError {
+            print("count not fetched \(error), \(error.userInfo)")
+        }
+    }
+    
+    private func fetchProducts() {
+        let fetchRequest: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
+        coreDataStack.managedContext.perform {
+            do {
+                let results = try fetchRequest.execute()
+                self.badgeCount.text = "\(results.count)"
+                
+            } catch {
+                print("Unable to Execute Fetch Request, \(error)")
+            }
+        }
+    }
 
 // MARK: - Buttons Configuration
 
@@ -158,7 +189,7 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     
     private let cartButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "cart"), for: .normal)
+        button.setImage(UIImage(systemName: "cart.badge.plus"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = .black
         button.titleLabel?.textAlignment = .center
@@ -174,31 +205,30 @@ class DetailProductViewController: UIViewController, CartViewManagerDelegate {
     }()
    
     @objc func addToCart() {
-        //cart.addToCart(product: productResult)
-        //displayCartCount(number: cart.products.count)
-       
+       // cart.addToCart(product: productResult)
+        
         let product = ProductEntity(context: self.coreDataStack.managedContext)
         product.name = productResult.title
         product.price = productResult.price
         product.productDescription = productResult.description
         product.image = productResult.image
         product.productID = productResult.id
+    
         self.coreDataStack.saveData()
-        
-    }
-    func displayCartCount(number: Int) {
-        badgeCount.text = "\(number)"
-    }
-    func showCount() {
-        do {
-            let request: NSFetchRequest<ProductEntity> = ProductEntity.fetchRequest()
-            let numberOfProducts = try coreDataStack.managedContext.count(for: request)
-            displayCartCount(number: numberOfProducts)
-        } catch {
-            print("error to show number of products")
-        }
     }
     
+   
+    func showCount() {
+      
+        populateCountLabel()
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: coreDataStack.managedContext, queue: .main) { [weak self] _ in
+            self?.fetchProducts()
+        }
+       
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     private func setupButtons() {
         let buttonStack = UIStackView()
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
