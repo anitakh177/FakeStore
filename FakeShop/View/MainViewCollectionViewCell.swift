@@ -24,7 +24,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         label.text = "Title"
         label.clipsToBounds = true
         label.textAlignment = .center
-        label.font = UIFont(name: "GeezaPro", size: 15)
+        label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 15)
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
@@ -34,7 +34,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "Price"
-        label.font = UIFont(name: "GeezaPro-Bold", size: 16)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 16)
         label.clipsToBounds = true
         label.textAlignment = .center
         return label

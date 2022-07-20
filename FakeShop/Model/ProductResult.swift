@@ -11,7 +11,7 @@ import Foundation
 struct Products: Codable {
     var id: Int16 = 0
     var title: String = ""
-    var price: Double = 0.0
+    var price: Double = 0
     var description: String = ""
     var category: Category?
     var image: String = ""

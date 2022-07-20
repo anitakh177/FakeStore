@@ -16,19 +16,16 @@ class DetailProductView: UIView {
         let imageView = UIImageView(frame: CGRect(x: 100, y: 100, width: 30, height: 30))
         imageView.image = UIImage()
         imageView.contentMode = .scaleAspectFit
-        //imageView.backgroundColor = .blue
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         imageView.heightAnchor.constraint(equalToConstant: 270).isActive = true
-        //view.addSubview(imageView)
+      
         return imageView
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Pajamas"
         label.textAlignment = .left
-        label.font = UIFont(name: "TamilSangamMN-Bold", size: 21)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 21)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
@@ -41,8 +38,7 @@ class DetailProductView: UIView {
         let label = UILabel()
         label.text = "0.0$"
         label.textAlignment = .right
-        label.font = UIFont(name: "Thonburi-Bold", size: 22)
-        //label.setContentCompressionResistancePriority(UILayoutPriority.required, for: .horizontal)
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 22)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -65,8 +61,8 @@ class DetailProductView: UIView {
     private lazy var categoryLabel: UILabel = {
         let label = UILabel()
         label.text = "Category"
-        label.textColor = .gray
-        label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        label.textColor = .darkGray
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         label.textAlignment = .left
         return label
     }()
@@ -100,6 +96,7 @@ class DetailProductView: UIView {
     private lazy var rateCountLabel: UILabel = {
         let label = UILabel()
         label.text = "0"
+        //label.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 17)
         label.textAlignment = .right
         return label
     }()
@@ -108,6 +105,8 @@ class DetailProductView: UIView {
         let label = UILabel()
         label.text = "Rating"
         label.textAlignment = .left
+        label.textColor = .darkGray
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 17)
         return label
     }()
     
@@ -123,25 +122,6 @@ class DetailProductView: UIView {
         stack.axis = .vertical
         return stack
     }()
-    
-    private let buyButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Buy now", for: .normal)
-        return button
-    }()
-    private let cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "cart"), for: .normal)
-        return button
-    }()
-   
-    private lazy var buttonStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [buyButton, cartButton])
-        stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        return stack
-    }()
-    
     
     private lazy var mainStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [imageStackView, titleLabel, categoryStackView, descriptionLabel, rateStackView, priceLabel])
@@ -183,7 +163,7 @@ class DetailProductView: UIView {
         descriptionLabel.text = result.description
         categoryNameLabel.text = "\(result.category!.rawValue)"
         ratingLabel.text = ("\(String(format: "%.1f", result.rating!.rate)) out of 5")
-        rateCountLabel.text = ("\(String(format: "%d", result.rating!.count)) people rated")
+        rateCountLabel.text = ("\(String(format: "%d", result.rating!.count)) rated")
         if let imagURL = URL(string: result.image) {
             downloadTask = productImage.loadImage(url: imagURL)
     }

@@ -22,7 +22,7 @@ class DetailProductViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let mainStackView = UIStackView()
     private let detailProductView = DetailProductView()
-    private let buttonView = ButtonView()
+    private let buttonView = DetailButtonView()
     
    
     override func viewDidLoad() {
@@ -70,7 +70,7 @@ class DetailProductViewController: UIViewController {
             frameLayoutGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             frameLayoutGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             frameLayoutGuide.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            frameLayoutGuide.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40)
+            frameLayoutGuide.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -75)
         ])
         
     }
@@ -127,19 +127,29 @@ class DetailProductViewController: UIViewController {
     // MARK: UI
    private func updateUI() {
         detailProductView.configure(for: productResult)
+       buttonView.priceLabel.text = "\(productResult.price)$"
     }
     
    private func setupButtonView() {
       view.addSubview(buttonView)
+       buttonView.addSubview(cartButton)
       buttonView.translatesAutoresizingMaskIntoConstraints = false
       
       NSLayoutConstraint.activate([
         buttonView.heightAnchor.constraint(equalToConstant: 100),
         buttonView.widthAnchor.constraint(equalTo: view.widthAnchor),
         buttonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        buttonView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        buttonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        
+        cartButton.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+        cartButton.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 5),
+        cartButton.leftAnchor.constraint(equalTo: buttonView.leftAnchor, constant: 10),
+        cartButton.rightAnchor.constraint(equalTo: buttonView.rightAnchor, constant: -10),
+        cartButton.heightAnchor.constraint(equalToConstant: 40)
       ])
-      setupButtons()
+       
+       
+      //setupButtons()
     }
 // MARK: - Helper Methods
     
@@ -189,16 +199,16 @@ class DetailProductViewController: UIViewController {
     
     private let cartButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "cart.badge.plus"), for: .normal)
+        button.setTitle("Add To Cart", for: .normal)
+        //button.setImage(UIImage(systemName: "cart.badge.plus"), for: .normal)
+    
+        button.titleLabel?.textColor = .white
         button.tintColor = .white
         button.backgroundColor = .black
-        button.titleLabel?.textAlignment = .center
+        button.contentHorizontalAlignment = .center
+        button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        
     
-        button.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 90).isActive = true
-        button.contentHorizontalAlignment = .right
         button.addTarget(self, action: #selector(addToCart), for: .touchUpInside)
     
         return button
@@ -219,7 +229,6 @@ class DetailProductViewController: UIViewController {
     
    
     func showCount() {
-      
         populateCountLabel()
         NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: coreDataStack.managedContext, queue: .main) { [weak self] _ in
             self?.fetchProducts()
@@ -233,7 +242,9 @@ class DetailProductViewController: UIViewController {
         let buttonStack = UIStackView()
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         buttonStack.axis = .horizontal
-        buttonStack.distribution = .equalSpacing
+        buttonStack.distribution = .fillProportionally
+        buttonStack.alignment = .center
+        buttonStack.spacing = 20
     
         buttonStack.addArrangedSubview(buyButton)
         buttonStack.addArrangedSubview(cartButton)
@@ -242,7 +253,7 @@ class DetailProductViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             buttonStack.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
-            buttonStack.widthAnchor.constraint(equalToConstant: 200),
+            buttonView.widthAnchor.constraint(equalTo: buttonView.widthAnchor),
             buttonStack.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -45)
         ])
     }

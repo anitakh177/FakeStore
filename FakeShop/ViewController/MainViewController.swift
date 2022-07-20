@@ -242,15 +242,16 @@ class MainViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Show all products", for: .normal)
         button.backgroundColor = .black
-        button.layer.cornerRadius = 23
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont(name: "AppleSDGothicNeo-Medium", size: 19)
         button.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(button)
         
         let frameLayoutGuide = scrollView.frameLayoutGuide
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.widthAnchor.constraint(equalToConstant: 250),
-            button.heightAnchor.constraint(equalToConstant: 45),
+            button.widthAnchor.constraint(equalToConstant: 300),
+            button.heightAnchor.constraint(equalToConstant: 40),
             button.bottomAnchor.constraint(equalTo: frameLayoutGuide.bottomAnchor, constant: -5)
         
         ])

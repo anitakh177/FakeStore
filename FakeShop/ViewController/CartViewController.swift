@@ -125,7 +125,8 @@ class CartViewController: UIViewController {
             let resultDict = results.first
             let totPrice = resultDict?["price"] as? Double ?? 0
             
-            cartFooterView.totalSumLabel.text = "\(totPrice)"
+            cartFooterView.totalSumLabel.text = ("\(String(format: "%.2f", totPrice))$")
+           
         } catch let error as NSError {
             print("price not fetched \(error), \(error.userInfo)")
         }
@@ -148,12 +149,13 @@ class CartViewController: UIViewController {
             do {
                 let results = try fetchRequest.execute()
                 self.cartFooterView.totalAmountOfProducts.text = "\(results.count)"
-                var total = 0.0
+                var total: Double = 0
                 results.forEach { item in
                     total += item.price
                 }
                 
-                self.cartFooterView.totalSumLabel.text = "\(total)"
+                self.cartFooterView.totalSumLabel.text = ("\(String(format: "%.2f", total))$")
+               // "\(total)"
                 
             } catch {
                 print("Unable to Execute Fetch Request, \(error)")

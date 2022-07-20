@@ -6,14 +6,8 @@
 //
 
 import Foundation
-import CoreData
 
-protocol CartViewManagerDelegate {
-    func displayCartCount(number: Int)
-}
-protocol CartManagerShowTotalDelegate {
-    func displayTotal(number: Double)
-}
+
 
 class CartManager {
    

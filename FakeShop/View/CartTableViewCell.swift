@@ -24,7 +24,8 @@ class CartTableViewCell: UITableViewCell {
         label.text = "Title"
         label.clipsToBounds = true
         label.textAlignment = .left
-        label.font = UIFont(name: "GeezaPro", size: 17)
+         label.font = UIFont(name: "AppleSDGothicNeo-SemiBold", size: 17)
+       
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
@@ -34,7 +35,7 @@ class CartTableViewCell: UITableViewCell {
      let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "Price"
-        label.font = UIFont(name: "GeezaPro-Bold", size: 20)
+         label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 19)
         label.clipsToBounds = true
         label.textAlignment = .left
         return label
