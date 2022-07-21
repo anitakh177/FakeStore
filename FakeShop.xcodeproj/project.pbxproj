@@ -24,6 +24,8 @@
 		086A6755286F2CA800AAE15E /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086A6754286F2CA800AAE15E /* CartManager.swift */; };
 		086A6757286F324900AAE15E /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086A6756286F324900AAE15E /* CartViewController.swift */; };
 		086A675B286F342D00AAE15E /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086A675A286F342D00AAE15E /* CartTableViewCell.swift */; };
+		086D45182887D51D008ABC3A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 086D45172887D51D008ABC3A /* GoogleService-Info.plist */; };
+		086D451A2887D871008ABC3A /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D45192887D871008ABC3A /* AuthenticationViewController.swift */; };
 		087578F6284E4AB5004F0CF8 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087578F5284E4AB5004F0CF8 /* NetworkManager.swift */; };
 		0895365B2861A2A3007E5930 /* AllProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895365A2861A2A3007E5930 /* AllProductsViewController.swift */; };
 		0895365D2861A358007E5930 /* AllProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895365C2861A358007E5930 /* AllProductsView.swift */; };
@@ -35,9 +37,14 @@
 		08C11B70287BF0FB00E27B7B /* DetailButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C11B6F287BF0FB00E27B7B /* DetailButtonView.swift */; };
 		08C11B72287BF79700E27B7B /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C11B71287BF79700E27B7B /* FavoriteViewController.swift */; };
 		08CA2078287E8E6100DCD9EB /* CartFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CA2077287E8E6100DCD9EB /* CartFooterView.swift */; };
+		08D23C1828891DD700D0D430 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D23C1728891DD700D0D430 /* SignUpViewController.swift */; };
+		08D23C1A28891DE200D0D430 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D23C1928891DE200D0D430 /* SignUpView.swift */; };
+		08D23C1D2889363700D0D430 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D23C1C2889363700D0D430 /* Utilities.swift */; };
+		A3A8DDA022D240916B1FB678 /* Pods_FakeShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ABEF85EC9E6BB795CED2FC8 /* Pods_FakeShop.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0795DB7CA7900DDFD25E82AE /* Pods-FakeShop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FakeShop.debug.xcconfig"; path = "Target Support Files/Pods-FakeShop/Pods-FakeShop.debug.xcconfig"; sourceTree = "<group>"; };
 		081B63E628868A500037DC14 /* CartEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CartEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		081B63E728868A500037DC14 /* CartEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CartEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		081B63E828868A500037DC14 /* ProductEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -57,6 +64,8 @@
 		086A6754286F2CA800AAE15E /* CartManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
 		086A6756286F324900AAE15E /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		086A675A286F342D00AAE15E /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
+		086D45172887D51D008ABC3A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		086D45192887D871008ABC3A /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		087578F5284E4AB5004F0CF8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0895365A2861A2A3007E5930 /* AllProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsViewController.swift; sourceTree = "<group>"; };
 		0895365C2861A358007E5930 /* AllProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsView.swift; sourceTree = "<group>"; };
@@ -68,6 +77,11 @@
 		08C11B6F287BF0FB00E27B7B /* DetailButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailButtonView.swift; sourceTree = "<group>"; };
 		08C11B71287BF79700E27B7B /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		08CA2077287E8E6100DCD9EB /* CartFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartFooterView.swift; sourceTree = "<group>"; };
+		08D23C1728891DD700D0D430 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		08D23C1928891DE200D0D430 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		08D23C1C2889363700D0D430 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		3ABEF85EC9E6BB795CED2FC8 /* Pods_FakeShop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FakeShop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		511FDBF1042FAE99E83C959A /* Pods-FakeShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FakeShop.release.xcconfig"; path = "Target Support Files/Pods-FakeShop/Pods-FakeShop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3A8DDA022D240916B1FB678 /* Pods_FakeShop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +109,8 @@
 			children = (
 				0837FC0B284E03D0000D6304 /* FakeShop */,
 				0837FC0A284E03D0000D6304 /* Products */,
+				FA19BBFD7347DCA62FFFA2CB /* Pods */,
+				CC8CBF3D7402B6683D3EDD23 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,11 +125,13 @@
 		0837FC0B284E03D0000D6304 /* FakeShop */ = {
 			isa = PBXGroup;
 			children = (
+				08D23C1B2889362500D0D430 /* Helpers */,
+				08D23C1628891DB000D0D430 /* Authentication */,
+				086D45172887D51D008ABC3A /* GoogleService-Info.plist */,
 				085ABDC7287FE3C4004C1B38 /* CoreData */,
 				0837FC0C284E03D0000D6304 /* AppDelegate.swift */,
 				0837FC0E284E03D0000D6304 /* SceneDelegate.swift */,
 				0837FC15284E03D1000D6304 /* Assets.xcassets */,
-				0870EE2C2852321D00435D14 /* Extension */,
 				0837FC1A284E03D1000D6304 /* Info.plist */,
 				0837FC20284E03DD000D6304 /* Model */,
 				08378D91287D8D8F00AF35A2 /* ModelView */,
@@ -142,6 +161,7 @@
 				086A6756286F324900AAE15E /* CartViewController.swift */,
 				08C11B71287BF79700E27B7B /* FavoriteViewController.swift */,
 				089C6C35288145E40093983A /* CartFetchedResultController.swift */,
+				086D45192887D871008ABC3A /* AuthenticationViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -181,12 +201,39 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
-		0870EE2C2852321D00435D14 /* Extension */ = {
+		08D23C1628891DB000D0D430 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				08D23C1728891DD700D0D430 /* SignUpViewController.swift */,
+				08D23C1928891DE200D0D430 /* SignUpView.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		08D23C1B2889362500D0D430 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				08D23C1C2889363700D0D430 /* Utilities.swift */,
 				08BA4163285A490B005A0A6D /* Pading.swift */,
 			);
-			path = Extension;
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		CC8CBF3D7402B6683D3EDD23 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3ABEF85EC9E6BB795CED2FC8 /* Pods_FakeShop.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA19BBFD7347DCA62FFFA2CB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0795DB7CA7900DDFD25E82AE /* Pods-FakeShop.debug.xcconfig */,
+				511FDBF1042FAE99E83C959A /* Pods-FakeShop.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,9 +243,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0837FC1D284E03D1000D6304 /* Build configuration list for PBXNativeTarget "FakeShop" */;
 			buildPhases = (
+				47123C5D92C2FFCA10B35267 /* [CP] Check Pods Manifest.lock */,
 				0837FC05284E03D0000D6304 /* Sources */,
 				0837FC06284E03D0000D6304 /* Frameworks */,
 				0837FC07284E03D0000D6304 /* Resources */,
+				1B830AEC8F4885224F70D341 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -249,10 +298,53 @@
 			files = (
 				0837FC19284E03D1000D6304 /* LaunchScreen.storyboard in Resources */,
 				0837FC16284E03D1000D6304 /* Assets.xcassets in Resources */,
+				086D45182887D51D008ABC3A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1B830AEC8F4885224F70D341 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FakeShop/Pods-FakeShop-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FakeShop/Pods-FakeShop-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FakeShop/Pods-FakeShop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		47123C5D92C2FFCA10B35267 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FakeShop-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0837FC05284E03D0000D6304 /* Sources */ = {
@@ -263,6 +355,7 @@
 				085ABDBF287FDEAD004C1B38 /* CoreDataStack.swift in Sources */,
 				086A6755286F2CA800AAE15E /* CartManager.swift in Sources */,
 				087578F6284E4AB5004F0CF8 /* NetworkManager.swift in Sources */,
+				086D451A2887D871008ABC3A /* AuthenticationViewController.swift in Sources */,
 				086A675B286F342D00AAE15E /* CartTableViewCell.swift in Sources */,
 				08378D95287D8E5300AF35A2 /* CartViewModel.swift in Sources */,
 				083D56E5284F8EF30083282C /* MainView.swift in Sources */,
@@ -276,13 +369,16 @@
 				08BA4164285A490B005A0A6D /* Pading.swift in Sources */,
 				089D3CC3285C7C370023A296 /* DetailProductView.swift in Sources */,
 				0837FC0D284E03D0000D6304 /* AppDelegate.swift in Sources */,
+				08D23C1D2889363700D0D430 /* Utilities.swift in Sources */,
 				08C11B72287BF79700E27B7B /* FavoriteViewController.swift in Sources */,
 				08CA2078287E8E6100DCD9EB /* CartFooterView.swift in Sources */,
 				086A6757286F324900AAE15E /* CartViewController.swift in Sources */,
 				081B63ED28868A500037DC14 /* ProductEntity+CoreDataProperties.swift in Sources */,
+				08D23C1828891DD700D0D430 /* SignUpViewController.swift in Sources */,
 				089C6C36288145E40093983A /* CartFetchedResultController.swift in Sources */,
 				0837FC0F284E03D0000D6304 /* SceneDelegate.swift in Sources */,
 				08C11B70287BF0FB00E27B7B /* DetailButtonView.swift in Sources */,
+				08D23C1A28891DE200D0D430 /* SignUpView.swift in Sources */,
 				081B63EA28868A500037DC14 /* CartEntity+CoreDataClass.swift in Sources */,
 				08AF90B0285C4FB3009C9658 /* DetailProductViewController.swift in Sources */,
 			);
@@ -420,6 +516,7 @@
 		};
 		0837FC1E284E03D1000D6304 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0795DB7CA7900DDFD25E82AE /* Pods-FakeShop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -447,6 +544,7 @@
 		};
 		0837FC1F284E03D1000D6304 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 511FDBF1042FAE99E83C959A /* Pods-FakeShop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

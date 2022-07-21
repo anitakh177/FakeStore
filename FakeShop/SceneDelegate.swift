@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -17,8 +18,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.tintColor = .black
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = createTabBar()
-        window?.makeKeyAndVisible()
+       
+        let signUpVC = SignUpViewController()
+        if Auth.auth().currentUser == nil {
+            window?.rootViewController = signUpVC
+            window?.makeKeyAndVisible()
+        } else {
+             window?.rootViewController = createTabBar()
+            window?.makeKeyAndVisible()
+        }
     }
     
     private func createMainNavController() -> UINavigationController {

@@ -50,7 +50,7 @@ class NetworkManager {
         do {
             var products = try JSONDecoder().decode([Products].self, from: data)
             products = self.parse(data: data)
-            print(products)
+            //print(products)
             DispatchQueue.main.async {
                 completion(products)
             }

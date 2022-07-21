@@ -56,7 +56,7 @@ class AllProductsViewController: UIViewController, UICollectionViewDelegate, UIC
    }
     
     func getBackButton() {
-       let leftBarButton = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
+    _ = navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissSelf))
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
     @objc private func dismissSelf() {
